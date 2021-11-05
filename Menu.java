@@ -572,6 +572,15 @@ public class Menu {
 	 * 
 	 * 
 	 */
+	
+	
+	public Promotion getPromotion(int index) {	
+		//index 0 is first promotion
+		//but on display 1)promo 1 is index 0 
+		//so typing 1 will give promotion 1 at index 0
+		return menuPromoList.get(index - 1);
+	}
+	
 	public int getMainMenuSize() {
 		return itemList.size();
 	}
