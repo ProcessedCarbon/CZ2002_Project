@@ -23,8 +23,7 @@ public class SystemManager
 	{
 		SystemManager sys = new SystemManager();
 
-		int time = 1000;
-		int tempInt;
+		int time = 1000; //TODO: SET TO STRING
 		String tempStr;
 
 		Menu menu = new Menu(); // MENU
@@ -99,8 +98,6 @@ public class SystemManager
 				Customer cst = new Customer("","",1,true,-1);
 				cst.CreateCustomer();
 				sys.AppendCustomerToList(cst); 
-				// for (int i = 0; i < customerList.size(); i++) System.out.println(customerList.get(i).getName());
-				
 				break;
 
 				////////////////////////////////
@@ -109,7 +106,7 @@ public class SystemManager
 
 			case 8: // CREATE ORDER // 
 				sc.nextLine(); // Buffer
-				System.out.println("Creating New Order");
+				System.out.println("Creating New Order...");
 				System.out.println("Enter Staff Name: ");
 				tempStr = sc.nextLine();
 				
@@ -167,21 +164,44 @@ public class SystemManager
 				////////////////////////////////
 
 			case 15: // CREATE RESERVATION //
-				// rsv = sys.MakeReservation(); 
-				// sys.AppendReservationToList(rsv); 	
+				sc.nextLine(); // Buffer
+				System.out.println("Creating New Reservation...");
+				System.out.println("Enter Customer Name: ");
+				tempStr = sc.nextLine();
+				
+				for(int i = 0; i < customerList.size(); i++)
+				{
+					if(tempStr.equals(customerList.get(i).getName())) 
+					{
+						Reservation rsv = new Reservation("","",-1,customerList.get(i),-1);
+						rsv.createReservation();
+						
+						int index = sys.FindFreeTable(rsv.getReservationPax());
+						
+						rsv.setReservationTable(index);
+						sys.ReserveTable(index);
+						
+						sys.AppendReservationToList(rsv);
+						System.out.println("Reservation Created!");
+						break;
+					}
+				}	
 				break;
 
 			case 16: // REMOVE RESERVATION //
-				// System.out.println("Enter Customer Name");
-				// String name;
-				// name = sc.nextLine();
-				//for (int i=0; i < reservationList.size(); i++)
-				//{
-				//	if(name.equals(reservationList.get(i).getReservationCustomer().getName()))
-				//	{
-				//		reservationList.remove(i);
-				//	}
-				//}
+				sc.nextLine(); //Buffer
+				System.out.println("Enter Customer Name");
+				tempStr = sc.nextLine();
+				for (int i=0; i < reservationList.size(); i++)
+				{
+					if(tempStr.equals(reservationList.get(i).getReservationCustomer().getName()))
+					{
+						tableList.get(reservationList.get(i).getReservationTable()).setReserved(false);;
+						reservationList.remove(i);
+						System.out.println("Reservation " + (i+1) + " Removed");
+						break;
+					}
+				}
 				break;
 
 			case 17: // CHECK FOR TIME OUT RESERVATION //
@@ -189,7 +209,6 @@ public class SystemManager
 				break;
 
 			case 18: // OCCUPY TABLE - FOR WALK IN CUSTOMERS //
-				// IMPORTANT: CREATE A CUSTOMER FIRST THEN CALL THIS FUNCTION
 				sc.nextLine();
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
@@ -206,29 +225,39 @@ public class SystemManager
 				break;
 				
 			case 19: // OCCUPY TABLE - FOR RESERVED CUSTOMERS //
+				sc.nextLine(); //Buffer
 				System.out.println("Enter Customer Name");
-				String name;
-				name = sc.nextLine();
-				sc.nextLine();
-				sys.fufilReservation(name);
+				tempStr = sc.nextLine();
+				for (int i=0; i < reservationList.size(); i++)
+				{
+					if(tempStr.equals(reservationList.get(i).getReservationCustomer().getName()))
+					{
+						tableList.get(reservationList.get(i).getReservationTable()).setOccupied(true);
+						reservationList.remove(i);
+						System.out.println("Fufilled Reservation " + (i+1));
+						break;
+					}
+				}
 				break;
 				
-			case 20: // SET TIME
-				System.out.println("Input time: ");
-				time = sc.nextInt();
-				break;
+			case 20: // TODO: SET TIME
+				// System.out.println("Input time: ");
+				// time = sc.nextInt();
+				// break;
+				
+			case 21:
+				sys.ViewTotalRevenue();
 
-			case 21: // EXIT PROGRAM //
+			case 22: // EXIT PROGRAM //
 				System.out.println("Exiting Program...");
 				break;
 
 				////////////////////////////////
 
 			}
-		} while(choice < 21);
+		} while(choice < 22);
 	}
 	
-	// public void AppendCustomerToList()
 	public void AppendCustomerToList(Customer cst) 
 	{
 		// ADD LOGIC HERE
@@ -238,7 +267,6 @@ public class SystemManager
 		System.out.println("Customer Appeneded to customerList!");
 	}
 	
-	//public void AppendOrderToList()
 	public void AppendOrderToList(Order order)
 	{
 		// ADD LOGIC HERE
@@ -247,7 +275,6 @@ public class SystemManager
 		System.out.println("Order Appeneded to customerList!");
 	}
 
-	//public void getOrderToUpdate()
 	public void getOrderToUpdate(int tableIndex, Menu menu)
 	{
 		// ADD LOGIC HERE
@@ -313,8 +340,8 @@ public class SystemManager
 		}
 	}
 	
-	//public void MakePayment ()
-	public void MakePayment (int tableIndex) // TableIndex
+	// Must have an order to table
+	public void MakePayment (int tableIndex) // TODO: 
 	{
 		// ADD LOGIC HERE
 		for (int i = 0; i < orderList.size(); i++)
@@ -322,9 +349,12 @@ public class SystemManager
 			if(orderList.get(i).getTableNo() == tableIndex)
 			{
 				System.out.println("Paying for Order...");
+				orderList.get(i).printInvoice();
 				paidOrderList.add(orderList.get(i));
-				orderList.remove(tableIndex);
-				return;
+				orderList.remove(i);
+				tableList.get(tableIndex-1).setOccupied(false);
+				tableList.get(tableIndex-1).setReserved(false);
+				break;
 			}	
 		}
 		System.out.println("Payment Made!");
@@ -332,7 +362,6 @@ public class SystemManager
 
 	// FINDING TABLE //
 
-	// public void FindFreeTable()
 	public int FindFreeTable(int numOfPax)
 	{
 		// ADD LOGIC HERE
@@ -348,11 +377,8 @@ public class SystemManager
 		
 		System.out.println("No tables are free.");
 		return -1;
-
-		// System.out.println("Free Table Found!");
 	}
 
-	// public void ReserveTable()
 	public void ReserveTable(int tableIndex)
 	{
 		// ADD LOGIC HERE
@@ -363,7 +389,6 @@ public class SystemManager
 
 	}
 	
-	//public void OccupyTable() 
 	public void OccupyTable(int tableIndex)
 	{
 		// ADD LOGIC HERE
@@ -373,7 +398,6 @@ public class SystemManager
 
 	}
 	
-	// public int OccupyFreeTable()	
 	public int OccupyFreeTable(int numOfPax)
 	{
 		// ADD LOGIC HERE
@@ -405,28 +429,6 @@ public class SystemManager
 		}
 	}
 
-	// RESERVATION // HARD CODED WARNING ONLY CREATE CUSTOMER -> MAKE RESERVATION -> DO NOT MAKE MORE THAN ONE CUSTOMER
-
-	public void MakeReservation() // TODO
-	// public Reservation MakeReservation()
-	{
-		// ADD LOGIC HERE
-
-		// Reservation rsv = new Reservation();
-		// rsv.CreateReservation();
-		// numofPax = rsv.getPax();
-		// int tableIndex = FindFreeTable(int numOfPax);
-
-		// if (tableIndex != -1)
-		// {
-		//	  ReserveTable(int tableIndex);
-		//	  rsv.setReservationTable(tableIndex);		
-		// }
-	
-		System.out.println("Table Reserved!");
-	}
-
-	//public void FulfilReservation()
 	public void fufilReservation(String name)
 	{
 		// ADD LOGIC HERE
@@ -445,7 +447,6 @@ public class SystemManager
 		System.out.println("Reservation Fulfilled.");
 	}
 	
-	// public void AppendReservationToList()
 	public void AppendReservationToList(Reservation rsv)
 	{
 		// ADD LOGIC HERE
@@ -455,7 +456,6 @@ public class SystemManager
 		System.out.println("Reservation Appended to List");
 	}
 
-	//public void RemoveReservation()
 	public void RemoveReservation(String name)
 	{
 		// ADD LOGIC HERE
@@ -510,8 +510,11 @@ public class SystemManager
 
 		for(int i = 0; i < paidOrderList.size(); i++)
 		{
-			totalRevenue += paidOrderList.get(i).getTotalPrice();
+			
+			totalRevenue += paidOrderList.get(i).getTotalPriceAfterCalculation();
 		}
+		
+		System.out.println("Total Price = $" + totalRevenue ); //TODO: ADD TAXES
 	}
 	
 	
@@ -545,8 +548,6 @@ public class SystemManager
 		System.out.println("12: Print Order Invoice");
 		System.out.println("13: Make Payment");
 
-		// TODO: Move Order to paidOrderList
-
 		// TABLES /////////////////////////////////
 
 		System.out.println("14: View Tables");
@@ -560,8 +561,10 @@ public class SystemManager
 		System.out.println("19: Occupy Table (Reservations)");
 		
 		System.out.println("20: Set Time");
+		
+		System.out.println("21: View Total Revenue");
 
-		System.out.println("21: Quit");
+		System.out.println("22: Quit");
 
 		System.out.println("================================");
 		///////////////////////////////////////////////////////		

@@ -512,7 +512,11 @@ public class Order {
 	public double getTotalPrice() {
 		return totalPrice;
 	}
-
+	
+	// Get Total Price After Calculation
+	public double getTotalPriceAfterCalculation() {
+		return ((getTotalPrice()) * ((100 - getDiscount()) / 100 ));
+	}
 	// PRINTS OUT LIST OF ALACARTE AND PROMO ITEMS IN ORDER
 	public void printOrderItems() {
 	    System.out.println("======== ORDERED ALACARTE ITEMS ==============");
@@ -545,6 +549,7 @@ public class Order {
 		System.out.println("Total Price: " + ((getTotalPrice()) * ((100 - getDiscount()) / 100 )));
 		System.out.println("===================");
 	}
+	
 
 }
 

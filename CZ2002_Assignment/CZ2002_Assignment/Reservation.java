@@ -1,20 +1,22 @@
 package CZ2002_Assignment;
 
+import java.util.Scanner;
+
 public class Reservation {
 
 	private String date;
-	private float time;
+	private String time;
 	private int pax;
 	private Customer customer;
-	private Table tableobj;
+	private int tableNo;
 	
-	public Reservation(String date, float time, int pax, Customer customer, Table tableobj)
+	public Reservation(String date, String time, int pax, Customer customer, int tableNo)
 	{
 		this.date = date;
 		this.time = time;
 		this.pax = pax;
 		this.customer = customer;
-		this.tableobj = tableobj;
+		this.tableNo = tableNo;
 	}
 	
 	//public Time_Out()
@@ -28,11 +30,11 @@ public class Reservation {
 		this.date = date;
 	}
 	
-	public float getReservationTime()
+	public String getReservationTime()
 	{
 		return time;
 	}
-	public void setReservationTime(float time)
+	public void setReservationTime(String time)
 	{
 		this.time = time;
 	}
@@ -50,18 +52,37 @@ public class Reservation {
 	{
 		return customer;
 	}
-	public void setReservationCustomer(Customer cst)
+	public void setReservationCustomer(Customer customer)
 	{
-		this.customer = cst;
+		this.customer = customer;
 	}
 	
-	public Table getReservationTable()
+	public int getReservationTable()
 	{
-		return tableobj;
+		return tableNo;
 	}
-	public void setReservationTable(Table tableobj)
+	public void setReservationTable(int tableNo)
 	{
-		this.tableobj = tableobj;
+		this.tableNo = tableNo;
 	}
-	
+	public void createReservation()
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		int tempIntPax;
+		String tempStringCustomerName;
+		String tempStringDate;
+		String tempStringTime;
+		
+		System.out.println("Number of Pax (including customer): ");
+		tempIntPax = sc.nextInt();
+		this.setReservationPax(tempIntPax);
+		sc.nextLine(); // Buffer
+		System.out.println("Date of reservation: ");
+		tempStringDate = sc.nextLine();
+		this.setReservationDate(tempStringDate);
+		System.out.println("Time of reservation: ");
+		tempStringTime = sc.nextLine();
+		this.setReservationTime(tempStringTime);
+	}
 }
