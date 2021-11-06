@@ -511,7 +511,7 @@ public class SystemManager
 		for(int i = 0; i < paidOrderList.size(); i++)
 		{
 			
-			totalRevenue += paidOrderList.get(i).getTotalPriceAfterCalculation();
+			totalRevenue += paidOrderList.get(i).getTotalPriceAfterTax();
 		}
 		
 		System.out.println("Total Price = $" + totalRevenue ); //TODO: ADD TAXES

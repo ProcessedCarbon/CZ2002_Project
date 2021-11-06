@@ -176,12 +176,12 @@ public class Order {
 
 	// CONSTRUCTOR
 	public Order(Staff s, String ts, int tn, float d) {
+		this.tax = 7;
 		this.staffName = s;
 		this.timeStamp = ts;
 		this.tableNo = tn;
 		this.discount = d;
 		this.totalPrice = 0;
-		this.tax = 7;
 		this.alacarte = new ArrayList<MenuItem>();
 		this.promo = new ArrayList<Promotion>();
 		this.alacarteqty = new ArrayList<Integer>();
@@ -483,6 +483,10 @@ public class Order {
 	public void setStaffName(Staff s) {
 		this.staffName = s;
 	}
+	
+	public void setTax(float tax) {
+		this.tax = tax;	
+	}	
 
 	public Staff getStaffName() {
 		return staffName;
@@ -498,6 +502,10 @@ public class Order {
 	public void setTableNo(int i) {
 		this.tableNo = i;
 	}
+	
+	public float getTax() {
+		return tax;	
+	}	
 
 	public int getTableNo() {
 		return tableNo;
@@ -515,19 +523,15 @@ public class Order {
 		return totalPrice;
 	}
 	
-	public float getTax() {
-		return tax;	
-	}		
-	
 	// Get Total Price After Calculation
 	public double getTotalPriceAfterCalculation() {
 		return ((getTotalPrice()) * ((100 - getDiscount()) / 100 ));
 	}
 	
-	// GET TOTAL PRICE AFTER TAX (GST)
-	getTotalPriceAfterTax() {
+	public double getTotalPriceAfterTax() {
 		return ((getTotalPriceAfterCalculation()) * ( (100 + getTax()) / 100 ));
 	}
+	
 	// PRINTS OUT LIST OF ALACARTE AND PROMO ITEMS IN ORDER
 	public void printOrderItems() {
 	    System.out.println("======== ORDERED ALACARTE ITEMS ==============");
@@ -545,11 +549,11 @@ public class Order {
 	    System.out.println("============ ORDER DETAILS ============");
 	    System.out.println("StaffName: "+getStaffName().getName()+"\nTimeStamp: "+getTimeStamp()+"\nTableNo: "+getTableNo()+"\nDiscount: "+getDiscount());
 	    printOrderItems();
-	    System.out.println("TotalPrice: " + getTotalPrice());
+	    System.out.println("TotalPrice: "+getTotalPrice());
 	  }
 
 	// PRINTS INVOICE
-	public void printInvoice(boolean isMember) {
+	public void printInvoice() {
 		System.out.println("==================");
 		System.out.println("INVOICE");
 		System.out.println("Table Number: " + getTableNo());
@@ -557,8 +561,8 @@ public class Order {
 		printOrderItems();
 		System.out.println("");
 		System.out.println("Discount Applied: " + getDiscount());
-		System.out.println("Total Price: " + (getTotalPriceAfterCalculation());
-		System.out.println("Total Price w GST: " + (getTotalPriceAfterTax());
+		System.out.println("Total Price: " + (getTotalPriceAfterCalculation()));
+		System.out.println("Total Price w GST: " + (getTotalPriceAfterTax()));
 		System.out.println("===================");
 	}
 	
