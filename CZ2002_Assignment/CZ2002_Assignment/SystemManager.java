@@ -2,6 +2,7 @@ package CZ2002_Assignment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.*;
 
 public class SystemManager
 {
@@ -12,18 +13,13 @@ public class SystemManager
 	static ArrayList<Customer> customerList = new ArrayList<Customer>();
 	static ArrayList<Staff> staffList = new ArrayList<Staff>();
 	static ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
-	 
-	// NOTES:
-	// Comment the things that are uncommented
-	// Uncomment the things that are commented 
-	// 1st Create a customer -> Create a Reservation/OccpuyFreeTable. 
-	// DO NOT Create multiple customers than create reservations/occupyFreeTables
 
 	public static void main(String[] args)
 	{
 		SystemManager sys = new SystemManager();
 
-		int time = 1000; //TODO: SET TO STRING
+		LocalTime currentTime = LocalTime.parse("09:00");
+		
 		String tempStr;
 
 		Menu menu = new Menu(); // MENU
@@ -36,7 +32,7 @@ public class SystemManager
 		// PRE MADE MENU; 		A menu that has pre-initialised menuItems 
 		// NON PRE MADE MENU: 	An empty menu
 
-		System.out.println("Do you want to use a pre-made menu?");
+		System.out.println("Do you want to use a pre-made menu (0/1)?");
 		choice = sc.nextInt();
 
 			if(choice == 1)
@@ -60,9 +56,7 @@ public class SystemManager
 				sys.DisplaySystemOptions();
 				break;
 
-				////////////////////////////////
-				// MENU - PROMO ////////////////
-				////////////////////////////////
+				// --- MENU --- //
 
 			case 1: // MENU ITEM CREATION //
 				menu.Create();
@@ -87,24 +81,19 @@ public class SystemManager
 			case 6: // UPDATE PROMOTION OPTIONS //
 				menu.Update();
 				break;
-
-			//TODO: View Menu Item (SYSTEMMANAGER)
 				
-				////////////////////////////////
-				// CUSTOMER //// ///////////////
-				////////////////////////////////
-
+				// --- CUSTOMER --- //
+				
 			case 7: // CREATE CUSTOMER //
 				Customer cst = new Customer("","",1,true,-1);
 				cst.CreateCustomer();
 				sys.AppendCustomerToList(cst); 
 				break;
-
-				////////////////////////////////
-				// ORDER ///////////////////////
-				////////////////////////////////
+				
+				// --- ORDER --- //
 
 			case 8: // CREATE ORDER // 
+				System.out.println("=========================");
 				sc.nextLine(); // Buffer
 				System.out.println("Creating New Order...");
 				System.out.println("Enter Staff Name: ");
@@ -114,57 +103,66 @@ public class SystemManager
 				{
 					if(tempStr.equals(staffList.get(i).getName())) 
 					{
-						Order order = new Order(staffList.get(i),"",-1,1);
+						Order order = new Order(staffList.get(i),currentTime,-1,1);
 						order.createOrder(menu);
 						sys.AppendOrderToList(order);
 						System.out.println("Order Created!");
 						break;
 					}
+					System.out.println(tempStr + " not found in staffList.");
 				}
 				break;
 
 			case 9: // UPDATE ORDER //
-				System.out.println("Enter Table Number (Update Order): ");
+				System.out.println("=========================");
+				System.out.println("Updating Order...");
+				System.out.println("Enter Table Number: ");
 				tableIndex = sc.nextInt();
 				sys.getOrderToUpdate(tableIndex, menu);
 				break;
 
 			case 10: // VIEW ORDERS //
-				System.out.println("Enter Table Number (View Order): ");
+				System.out.println("=========================");
+				System.out.println("Viewing Order...");
+				System.out.println("Enter Table Number: ");
 				tableIndex = sc.nextInt();
 				sys.ViewOrder(tableIndex);
 				break;
 				
 			case 11: // VIEW ALL ORDERS //
+				System.out.println("=========================");
+				System.out.println("Viewing All Orders...");
 				sys.ViewAllOrders();
 				break;
 
 			case 12: // PRINT ORDER INVOICE //
-				System.out.println("Enter Table Number (View Order Invoice): ");
+				System.out.println("=========================");
+				System.out.println("Viewing Order Invoice...");
+				System.out.println("Enter Table Number: ");
 				tableIndex = sc.nextInt();
 				sys.ViewOrderInvoice(tableIndex);
 				break;
 
-			case 13: // MAKE PAYMEMT // //TODO: HANDLE PAYMENT
-				System.out.println("Enter Table Number (Making Payment): ");
+			case 13:
+				System.out.println("=========================");
+				System.out.println("Making payment...");
+				System.out.println("Enter Table Number: ");
 				tableIndex = sc.nextInt();
 				sys.MakePayment(tableIndex);
 				break;
 
-				////////////////////////////////
-				// TABLES //////////////////////
-				////////////////////////////////
+
+				// --- TABLE --- //
 
 			case 14: // VIEW TABLE //
 				sys.ViewTable();
 				break;
 
-				////////////////////////////////
-				// RESERVATION /////////////////
-				////////////////////////////////
+				// --- RESERVATION  --- //
 
 			case 15: // CREATE RESERVATION //
-				sc.nextLine(); // Buffer
+				sc.nextLine(); 
+				System.out.println("=========================");
 				System.out.println("Creating New Reservation...");
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
@@ -173,7 +171,10 @@ public class SystemManager
 				{
 					if(tempStr.equals(customerList.get(i).getName())) 
 					{
-						Reservation rsv = new Reservation("","",-1,customerList.get(i),-1);
+						System.out.println("Input Reservation Time (XX:XX):");
+						String temp = sc.nextLine();
+						
+						Reservation rsv = new Reservation("",LocalTime.parse(temp),-1,customerList.get(i),-1);
 						rsv.createReservation();
 						
 						int index = sys.FindFreeTable(rsv.getReservationPax());
@@ -182,15 +183,18 @@ public class SystemManager
 						sys.ReserveTable(index);
 						
 						sys.AppendReservationToList(rsv);
-						System.out.println("Reservation Created!");
+						System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " created!");
 						break;
 					}
-				}	
+					System.out.println(tempStr + " not found in customerList.");
+				}
 				break;
 
 			case 16: // REMOVE RESERVATION //
-				sc.nextLine(); //Buffer
-				System.out.println("Enter Customer Name");
+				sc.nextLine();
+				System.out.println("=========================");
+				System.out.println("Removing Reservation...");
+				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
 				for (int i=0; i < reservationList.size(); i++)
 				{
@@ -198,18 +202,24 @@ public class SystemManager
 					{
 						tableList.get(reservationList.get(i).getReservationTable()).setReserved(false);;
 						reservationList.remove(i);
-						System.out.println("Reservation " + (i+1) + " Removed");
+						System.out.println("Reservation for " + tempStr + " Removed");
 						break;
 					}
+					System.out.println(tempStr + " not found in customerList.");
 				}
 				break;
 
 			case 17: // CHECK FOR TIME OUT RESERVATION //
-				// sys.CheckForTimeOut(time);
+				System.out.println("=========================");
+				System.out.println("Checking for reservation time outs...");
+				sys.CheckForTimeOut(currentTime);
 				break;
+				
+				// --- OCCUPY TABLE --- //
 
 			case 18: // OCCUPY TABLE - FOR WALK IN CUSTOMERS //
 				sc.nextLine();
+				System.out.println("=========================");
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
 				for(int i = 0; i < customerList.size(); i++)
@@ -220,13 +230,16 @@ public class SystemManager
 						numOfPax = sc.nextInt();
 						tableIndex = sys.OccupyFreeTable(numOfPax);
 						customerList.get(i).setTableNo(tableIndex); 
+						break;
 					}
+					System.out.println("All tables occupied.");
 				}
 				break;
 				
 			case 19: // OCCUPY TABLE - FOR RESERVED CUSTOMERS //
-				sc.nextLine(); //Buffer
-				System.out.println("Enter Customer Name");
+				sc.nextLine();
+				System.out.println("=========================");
+				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
 				for (int i=0; i < reservationList.size(); i++)
 				{
@@ -234,25 +247,24 @@ public class SystemManager
 					{
 						tableList.get(reservationList.get(i).getReservationTable()).setOccupied(true);
 						reservationList.remove(i);
-						System.out.println("Fufilled Reservation " + (i+1));
+						System.out.println("Fufilled Reservation for " + tempStr);
 						break;
 					}
 				}
 				break;
 				
-			case 20: // TODO: SET TIME
-				// System.out.println("Input time: ");
-				// time = sc.nextInt();
-				// break;
+			case 20:
+				currentTime = sys.TimeOptions(currentTime);
+				break;
 				
-			case 21:
+			case 21: // View Total Revenue
 				sys.ViewTotalRevenue();
 
 			case 22: // EXIT PROGRAM //
 				System.out.println("Exiting Program...");
 				break;
 
-				////////////////////////////////
+				/////////////////////////////////////////////
 
 			}
 		} while(choice < 22);
@@ -260,25 +272,18 @@ public class SystemManager
 	
 	public void AppendCustomerToList(Customer cst) 
 	{
-		// ADD LOGIC HERE
-
 		customerList.add(cst);
-
-		System.out.println("Customer Appeneded to customerList!");
+		System.out.println(cst.getName() + " appended to customerList!");
 	}
 	
 	public void AppendOrderToList(Order order)
 	{
-		// ADD LOGIC HERE
 		orderList.add(order);
-
-		System.out.println("Order Appeneded to customerList!");
+		System.out.println("Order appended to customerList!");
 	}
 
 	public void getOrderToUpdate(int tableIndex, Menu menu)
 	{
-		// ADD LOGIC HERE
-		
 		for (int i = 0; i < orderList.size(); i++)
 		{
 			if(orderList.get(i).getTableNo() == tableIndex)
@@ -291,18 +296,14 @@ public class SystemManager
 		System.out.println("Order not found.");
 		return;
 	}
-	
-	// public void ViewOrder() 
+
 	public void ViewOrder(int tableIndex)
 	{
-		// ADD LOGIC HERE
-		
 		for (int i = 0; i < orderList.size(); i++)
 		{
 			if(orderList.get(i).getTableNo() == tableIndex)
 			{
-				System.out.println("Printing Order...");
-				orderList.get(i).printOrder(); //printOrderItems()
+				orderList.get(i).printOrder();
 				return;
 			}
 		}
@@ -311,114 +312,93 @@ public class SystemManager
 	}	
 
 	public void ViewAllOrders()
-	{		
-		System.out.println("View All Orders...");
-
-		// ADD LOGIC HERE
-
+	{	
 		for (int i = 0; i < orderList.size(); i++)
 		{
-			System.out.println("Printing Order...");
 			orderList.get(i).printOrder();
 		}
 		return;
 	}
 	
-	// public void ViewOrderInvoice()
 	public void ViewOrderInvoice(int tableIndex)
 	{
-		// ADD LOGIC HERE
-
 		for (int i = 0; i < orderList.size(); i++)
 		{
 			if(orderList.get(i).getTableNo() == tableIndex)
 			{
-				System.out.println("Viewing Order Invoice...");
 				orderList.get(i).printInvoice();
 				return;
 			}	
 		}
+		System.out.println("Order not found.");
+		return;
 	}
 	
-	// Must have an order to table
-	public void MakePayment (int tableIndex) // TODO: 
+	public void MakePayment (int tableIndex)
 	{
-		// ADD LOGIC HERE
 		for (int i = 0; i < orderList.size(); i++)
 		{
 			if(orderList.get(i).getTableNo() == tableIndex)
 			{
-				System.out.println("Paying for Order...");
 				orderList.get(i).printInvoice();
 				paidOrderList.add(orderList.get(i));
 				orderList.remove(i);
 				tableList.get(tableIndex-1).setOccupied(false);
 				tableList.get(tableIndex-1).setReserved(false);
-				break;
+				System.out.println("Payment for " + tableIndex + " Made!");
+				return;
 			}	
 		}
-		System.out.println("Payment Made!");
+		System.out.println("Order not found.");
+		return;
 	}
-
-	// FINDING TABLE //
 
 	public int FindFreeTable(int numOfPax)
 	{
-		// ADD LOGIC HERE
-
 		for(int i = 0; i < tableList.size() ; i++)
 		{
 			if(tableList.get(i).getSeatCapacity() >= numOfPax && !tableList.get(i).isReserved() && !tableList.get(i).isOccupied())
 			{
 				System.out.println("Table " + (i+1) + " is free");
 				return i;
-		   }
+			}
 		 }
-		
 		System.out.println("No tables are free.");
 		return -1;
 	}
 
 	public void ReserveTable(int tableIndex)
 	{
-		// ADD LOGIC HERE
-
-		tableList.get(tableIndex).setReserved(true); // TODO: setReserved() -> Reservation Class
-
-		System.out.println("Free Table Reserved!");
-
+		tableList.get(tableIndex).setReserved(true);
+		System.out.println("Table " + (tableIndex+1) + " reserved");
+		return;
 	}
 	
 	public void OccupyTable(int tableIndex)
 	{
-		// ADD LOGIC HERE
-		
 		tableList.get(tableIndex).setOccupied(true);
-		System.out.println("Table Occupied!");
-
+		System.out.println("Table " + (tableIndex+1) + " occupied!");
 	}
 	
 	public int OccupyFreeTable(int numOfPax)
 	{
-		// ADD LOGIC HERE
-		
 		int tableIndex = FindFreeTable(numOfPax);
 		
 		if(tableIndex != -1)
 		{
 			 OccupyTable(tableIndex);
-			 System.out.println("Free table occupied!");
-			 //return tableIndex;
+			 return tableIndex;
 		}
 		else
-			System.out.println("No Free Tables Found.");
-		
-		return -1;
+		{
+			System.out.println("All tables occupied.");
+			return -1;
+		}	
 	}
 	
 	public void ViewTable() 
 	{
-		// ADD LOGIC HERE
+		System.out.println("===================================");
 		System.out.println("Viewing Tables...");
 		for(int i = 0; i < tableList.size(); i++)
 		{
@@ -431,35 +411,34 @@ public class SystemManager
 
 	public void fufilReservation(String name)
 	{
-		// ADD LOGIC HERE
-		
 		for (int i = 0; i < customerList.size(); i++)
 		{
 			if(name.equals(customerList.get(i).getName()))
 			{
 				OccupyTable(customerList.get(i).getTableNo());
-				System.out.println("Reservation Fulfilled.");
+				System.out.println("Reservation for" + name + " Fulfilled.");
 				return;
 			}
 		}
-		System.out.println("Customer not found.");
-		
-		System.out.println("Reservation Fulfilled.");
+		System.out.println(name + " not found.");
+		return;
+	}
+	public void ViewReservation(Reservation rsv)
+	{
+		System.out.println(rsv.getReservationTable());
+		System.out.println(rsv.getReservationTime());
+		System.out.println(rsv.getReservationCustomer().getName());
+		System.out.println(rsv.getReservationPax());
 	}
 	
 	public void AppendReservationToList(Reservation rsv)
 	{
-		// ADD LOGIC HERE
-
 		reservationList.add(rsv);
-
-		System.out.println("Reservation Appended to List");
+		System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " appended to List");
 	}
 
 	public void RemoveReservation(String name)
 	{
-		// ADD LOGIC HERE
-		
 		for (int i = 0; i < customerList.size(); i++)
 		{
 		 	if(name.equals(customerList.get(i).getName()))
@@ -469,35 +448,42 @@ public class SystemManager
 				return;
 			}
 		}
-		System.out.println("Table Unreserved");
+		System.out.println("Reservation not found.");
+		
+		//////
+		
+		
+		
 	}
 
-	public void CheckForTimeOut() // TODO
-	// public void CheckForTimeOut(int time)
-	{
-		// ADD LOGIC HERE
-		
+	public void CheckForTimeOut(LocalTime currentTime)
+	{		
 		System.out.println("Checking for time out...");
 		
-		// int timeOutTime = 30;
-
-		// Reservation rsv = new Reservation();
-
-		// for (int i = 0; i < reservationList.size(); i++)
-		// {
-		// 	rsv = reservationList.get(i);
-		//	if(rsv.Reserved() && rsv.getOccupied && time <= (rsv.getReservationTime() + timeOutTime))
-		//	{	
-		//		for(int j = 0; j < customerList.size(); j++)
-		//		{
-		//			if(customerList.get(j).getTableNo() == rsv.getTableNo())		// TODO: tableNo in both RSV CLASS AND CUST CLASS
-		//			{
-		//				customerList.get(j).setTableNo(-1);							// TODO: setTableNo() CUSTOMER CLASS
-		//			}
-		//		}
-		//		reservationList.get(i).setReserved(false);
-		//  }
-		// }
+		int maxTimeDuration = 30;
+		String tempStr;
+		
+		for(int i = 0; i < reservationList.size(); i++)
+		{
+			LocalTime maxTime = reservationList.get(i).getReservationTime().plus(Duration.ofMinutes(maxTimeDuration));
+			//System.out.println("Max Time: " + maxTime);
+			if(currentTime.isAfter(maxTime))
+			{
+				tempStr = reservationList.get(i).getReservationCustomer().getName();
+				
+				for (int j=0; j < reservationList.size(); i++)
+				{
+					if(tempStr.equals(reservationList.get(i).getReservationCustomer().getName()))
+					{
+						tableList.get(reservationList.get(i).getReservationTable()).setReserved(false);;
+						reservationList.remove(i);
+						System.out.println("Reservation for " + tempStr + " Removed.");
+						break;
+					}
+				}
+			}
+		}
+		
 	}
 	
 	public void ViewTotalRevenue() // TODO: 
@@ -514,13 +500,66 @@ public class SystemManager
 			totalRevenue += paidOrderList.get(i).getTotalPriceAfterTax();
 		}
 		
-		System.out.println("Total Price = $" + totalRevenue ); //TODO: ADD TAXES
+		System.out.println("Total Price = $" + totalRevenue ); 
 	}
-	
+
+	public LocalTime TimeOptions(LocalTime currentTime)
+	{
+		Scanner sc = new Scanner(System.in);
+		String tempStr;
+		int tempInt, choice;
+		System.out.println("=========================");
+		System.out.println("(1) View");
+		System.out.println("(2) Set Time Manually");
+		System.out.println("(3) Advance time by Hours");
+		System.out.println("(4) Advance time by Hours");
+		System.out.println("(5) Exit");
+		System.out.println("=========================");
+		
+		do
+		{
+			choice = sc.nextInt();
+			switch(choice)
+			{
+			case 1:
+				System.out.println("Time: " + currentTime);
+				break;
+			
+			case 2:
+				sc.nextLine(); // Buffer
+				System.out.println("Input Time (XX:XX): ");
+				tempStr = sc.nextLine();
+				currentTime = LocalTime.parse(tempStr);
+				System.out.println("Time: " + currentTime);
+				break;
+				
+			case 3:
+				System.out.println("Advance time by (Minutes): ");
+				tempInt = sc.nextInt();
+				currentTime = currentTime.plus(Duration.ofMinutes(tempInt));
+				System.out.println("Time: " + currentTime);
+				break;
+				
+			case 4:
+				System.out.println("Advance time by (Hours): ");
+				tempInt = sc.nextInt();
+				currentTime = currentTime.plus(Duration.ofHours(tempInt));
+				System.out.println("Time: " + currentTime);
+				break;
+				
+			case 5:
+				System.out.println("Exiting Time Options");
+				break;
+				
+			}
+		} while(choice < 5);
+		
+		return currentTime;
+	}
 	
 	public void DisplaySystemOptions()
 	{
-		System.out.println("================================");
+		System.out.println("=========================");
 
 		// MENU //////////////////////////////////
 
@@ -566,7 +605,7 @@ public class SystemManager
 
 		System.out.println("22: Quit");
 
-		System.out.println("================================");
+		System.out.println("=========================");
 		///////////////////////////////////////////////////////		
 	}
 	

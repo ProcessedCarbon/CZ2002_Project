@@ -1,25 +1,24 @@
 package CZ2002_Assignment;
 
 import java.util.Scanner;
+import java.time.*;
 
 public class Reservation {
 
 	private String date;
-	private String time;
+	LocalTime time; // Changed String time to LocalTime together with its functions
 	private int pax;
 	private Customer customer;
 	private int tableNo;
 	
-	public Reservation(String date, String time, int pax, Customer customer, int tableNo)
+	public Reservation(String date, LocalTime time, int pax, Customer customer, int tableNo)
 	{
 		this.date = date;
-		this.time = time;
+		this.time = LocalTime.parse("09:00");
 		this.pax = pax;
 		this.customer = customer;
 		this.tableNo = tableNo;
 	}
-	
-	//public Time_Out()
 	
 	public String getReservationDate()
 	{
@@ -30,11 +29,11 @@ public class Reservation {
 		this.date = date;
 	}
 	
-	public String getReservationTime()
+	public LocalTime getReservationTime()
 	{
 		return time;
 	}
-	public void setReservationTime(String time)
+	public void setReservationTime(LocalTime time)
 	{
 		this.time = time;
 	}
@@ -70,9 +69,7 @@ public class Reservation {
 		Scanner sc = new Scanner(System.in);
 		
 		int tempIntPax;
-		String tempStringCustomerName;
 		String tempStringDate;
-		String tempStringTime;
 		
 		System.out.println("Number of Pax (including customer): ");
 		tempIntPax = sc.nextInt();
@@ -81,8 +78,5 @@ public class Reservation {
 		System.out.println("Date of reservation: ");
 		tempStringDate = sc.nextLine();
 		this.setReservationDate(tempStringDate);
-		System.out.println("Time of reservation: ");
-		tempStringTime = sc.nextLine();
-		this.setReservationTime(tempStringTime);
 	}
 }

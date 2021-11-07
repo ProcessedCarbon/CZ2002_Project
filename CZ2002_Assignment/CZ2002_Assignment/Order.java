@@ -152,6 +152,7 @@ import CZ2002_Assignment.MenuItem;
 import CZ2002_Assignment.Menu;
 
 import java.util.*;  
+import java.time.*;
 
 // ==========================================
 // ASSUMPTIONS
@@ -167,7 +168,8 @@ public class Order {
 	private ArrayList<Promotion> promo;
 	private ArrayList<Integer> alacarteqty;
 	private ArrayList<Integer> promoqty;
-	private String timeStamp;
+	//private String timeStamp; // TODO
+	LocalTime timeStamp;	// Changed String time to LocalTime together with its functions
 	private int tableNo;
 	private float discount;
 	private double totalPrice;
@@ -175,7 +177,7 @@ public class Order {
 	private Scanner sc = new Scanner(System.in);
 
 	// CONSTRUCTOR
-	public Order(Staff s, String ts, int tn, float d) {
+	public Order(Staff s, LocalTime ts, int tn, float d) {
 		this.tax = 7;
 		this.staffName = s;
 		this.timeStamp = ts;
@@ -224,13 +226,13 @@ public class Order {
 	
 	// ------------------------------------------------------------ //
 	public void createOrder(Menu menu) {
-		String timestampToAdd;
+		//String timestampToAdd;
 		int tablenoToAdd;
 		float discountToAdd;
 
-		System.out.println("Enter time stamp");
-		timestampToAdd = sc.next();
-		this.setTimeStamp(timestampToAdd);
+		//System.out.println("Enter time stamp");
+		//timestampToAdd = sc.next();
+		//this.setTimeStamp(timestampToAdd);
 		System.out.println("Enter table number");
 		tablenoToAdd = sc.nextInt();
 		this.setTableNo(tablenoToAdd);
@@ -491,11 +493,11 @@ public class Order {
 	public Staff getStaffName() {
 		return staffName;
 	}
-	public void setTimeStamp(String ts) {
+	public void setTimeStamp(LocalTime ts) {
 		this.timeStamp = ts;
 	}
 
-	public String getTimeStamp() {
+	public LocalTime getTimeStamp() {
 		return timeStamp;
 	}
 
