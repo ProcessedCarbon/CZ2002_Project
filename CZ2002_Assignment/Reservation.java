@@ -3,6 +3,9 @@ package CZ2002_Assignment;
 import java.util.Scanner;
 import java.time.*;
 
+/**
+* Reservation Class
+*/
 public class Reservation {
 
 	private String date;

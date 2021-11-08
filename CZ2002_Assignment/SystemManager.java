@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.*;
 
+/**
+* Main controller of the system
+* Collects information from other class and outputs to console application
+*/
 public class SystemManager
 {
 	
@@ -14,6 +18,11 @@ public class SystemManager
 	static ArrayList<Staff> staffList = new ArrayList<Staff>();
 	static ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
 
+	
+	/**
+	* Main function of the program
+	* @param args args
+	*/
 	public static void main(String[] args)
 	{
 		SystemManager sys = new SystemManager();
@@ -525,7 +534,7 @@ public class SystemManager
 	}
 	
 	/**
-	* View all customers and their parameters
+	* Prints all valid customers in a single line
 	*/
 	public void ViewAllCustomer()
 	{
@@ -538,6 +547,9 @@ public class SystemManager
 		System.out.println("-------------------------");
 	}
 	
+	/**
+	* Prints all valid staffs in a single line 
+	*/
 	public void ViewAllStaff()
 	{
 		System.out.println("Viewing Staff...");
@@ -549,12 +561,20 @@ public class SystemManager
 		System.out.println("-------------------------");
 	}
 	
+	/**
+	* Append Reservation Object to reservationList
+	* @param rsv Reservation Object to be appended
+	*/
  	public void AppendReservationToList(Reservation rsv)
 	{
 		reservationList.add(rsv);
 		System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " appended to List");
 	}
 
+	/**
+	* Remove Reservation Object of specific reservation from the reservation List
+	* setReserved(false) of specific reserved table
+	*/
 	public void RemoveReservation()
 	{		
 		String tempStr;
@@ -577,6 +597,12 @@ public class SystemManager
 		}	
 	}
 
+	/**
+	* Checks all Reservation Objects in reservationList and times out expired reservations
+	* Expired reservations are reservations that exceed the maxTime
+	* maxTime = Reservation Time + Max Time Limit
+	* @param currentTime Current Time of System
+	*/
 	public void CheckForTimeOut(LocalTime currentTime)
 	{		
 		System.out.println("Checking for time out...");
@@ -607,8 +633,10 @@ public class SystemManager
 		}
 		
 	}
-	
-	public void ViewTotalRevenue() // TODO: 
+	/**
+	* Loops through paidOrderList and sums the total revenue generated.
+	*/
+	public void ViewTotalRevenue()
 	{
 		System.out.println("=========================");
 		System.out.println("Calculating Total Revenue...");
@@ -626,6 +654,13 @@ public class SystemManager
 		System.out.println("Total Revenue = $" + totalRevenue ); 
 	}
 	
+	/**
+	* Time options for currentTime variable
+	* Time can be view or modified
+	* Each time the currentTime is modified, CheckForTimeOut() will be triggered.
+	* @param currentTime Current Time of the System
+	* @return the modified time
+	*/
 	public LocalTime TimeOptions(LocalTime currentTime)
 	{
 		Scanner sc = new Scanner(System.in);
@@ -683,9 +718,14 @@ public class SystemManager
 		return currentTime;
 	}
 	
+	/**
+	* Displays all valid  system options
+	*/
 	public void DisplaySystemOptions()
 	{
 		System.out.println("=========================");
+		
+		System.out.println("0:  Display System Options");
 
 		// MENU //////////////////////////////////
 
@@ -730,6 +770,9 @@ public class SystemManager
 		///////////////////////////////////////////////////////		
 	}
 	
+	/**
+	* Loads a collection of pre-determined Staff Objects to staffList
+	*/
 	public void LoadStaff()
 	{
 		Staff staff1 = new Staff("Joan", "Female", "Waiter", 0);
@@ -744,6 +787,9 @@ public class SystemManager
 		staffList.add(staff5);
 	}
 	
+	/**
+	* Loads a collection of pre-determined Table Objects to tableList
+	*/
 	public void LoadTable()
 	{
 		Table table1 = new Table (2,false,false);

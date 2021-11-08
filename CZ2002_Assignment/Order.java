@@ -160,6 +160,9 @@ import java.time.*;
 // ASK USER TO TYPE -1 TO STOP ANY INPUTS
 // ==========================================
 
+/**
+* Order Class
+*/
 public class Order {
 
 	// ATTRIBUTES

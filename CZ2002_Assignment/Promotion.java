@@ -2,7 +2,9 @@ package CZ2002_Assignment;
 
 import java.util.*;
 
-
+/**
+ * Promotion class
+ */
 public class Promotion {
 	//promotionItem are group of menu items on discounted price or special items not in menue
 	private ArrayList<MenuItem> promotionSet;

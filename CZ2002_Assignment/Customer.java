@@ -2,6 +2,9 @@ package CZ2002_Assignment;
 
 import java.util.Scanner; // TODO: Add this
 
+/**
+* Customer Class
+*/
 public class Customer {
 	private String Name, Gender;
 	private int Contact; // TODO: private int Gender -> private String Gender

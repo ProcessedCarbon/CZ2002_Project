@@ -3,56 +3,30 @@ package CZ2002_Assignment;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Menu class for all menu related methods
+*/
 public class Menu {
-
-	private int menuItemSize = 0;
-	private int menuPromoSize = 0;
-	private static ArrayList<MenuItem> itemList = new ArrayList<MenuItem> ();
+	private ArrayList<MenuItem> itemList = new ArrayList<MenuItem> ();
+	private ArrayList<Promotion> menuPromoList = new ArrayList<Promotion> ();
 	
-	//array list of array list
-	private static ArrayList<Promotion> menuPromoList = new ArrayList<Promotion> ();
-
-	// testing purpose
-	/*
-	public static void main (String[] args) {
-		Menu menu = new Menu();
-		// Base list of predefined menuItems
-		menu.LoadBaseMenu();
-		//menu.CreateNewMenuItem();
-		//menu.PrintMenu();
-		menu.CreateNewPromotion();
-		while(true) {
-			//just to test all condition 
-			menu.Update();
-			Scanner scan = new Scanner(System.in);
-			int x = scan.nextInt();
-			if(x == 0) {
-				System.out.println("quit loop");
-				break;
-			}
-		}
-		
-		//menu.Update();
-		//menu.PrintMenu();
-		
-		//menu.CreateNewMenuItem();
-		System.out.println("testing remove");
-		menu.Remove();
-		menu.PrintMenu();
-	}
+	/**
+	   * Loads the base menu and concatenates the list of base menu items to current item list.
 	*/
-	
-	// Loads the base menu and concatenates the list of base menu items to current item list.
 	public void LoadBaseMenu() {
 		BaseMenu bm = new BaseMenu();
-		itemList.addAll(bm.CreateBase());
+		//if(bm.baseMenuSize() > 0)
+			itemList.addAll(bm.CreateBaseItemList());
+		
+		//if(bm.basePromoSize() > 0)
+			menuPromoList.addAll(bm.CreateBasePromoList());
 
 		PrintMenu();
-
-		//int size = getMenuSize();
-		//setMenuSize(size + bm.baseMenuSize());
 	}
 	
+	/**
+	   * Serves as an interface to create items for both menu and promotion lists
+	*/
 	public void Create() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("(1) Create New Item");
@@ -67,8 +41,10 @@ public class Menu {
 			CreateNewPromotion();
 		}
 	}
-
-	// Key in number of menu items you want to add to the menu and adds them, values keyed must be case specific
+	
+	/**
+	   * Key in number of menu items you want to add to the menu and adds them, values keyed must be case specific
+	*/
 	public void CreateNewMenuItem() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("How many items you wish to add?");
@@ -129,6 +105,9 @@ public class Menu {
 		}
 	}
 
+	/**
+	   * Interface to create new instance of a promotion object in the menu
+	*/
 	public void CreateNewPromotion() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("How many promotionalSets you wish to add?");
@@ -181,6 +160,11 @@ public class Menu {
 		}
 	}
 
+	/**
+	   * Add items to a newly create promo set
+	   * @param curPromoset current promo set for item to be added to
+	   * @param size the number of items to be added to the set
+	*/
 	private void addItemsToPromoSet(Promotion curPromoSet,int size) {
 		Scanner sc = new Scanner(System.in);
 		for(int j = 0;j<size;j++) {
@@ -240,7 +224,11 @@ public class Menu {
 		
 	}
 	
-	// Checks through both list to see if there are any duplicates of name == parameter in both Lists
+	/**
+	   * Checks through mennu item list to see if there are any duplicates of name == parameter in both Lists
+	   * @param name reference name of item to search duplicate of
+	   * @return returns wether a duplicate is found or not
+	*/
 	private boolean CheckList(String name) {
 		for(int i = 0; i < itemList.size();i++) {
 			String itemName = itemList.get(i).getItemName();
@@ -250,17 +238,14 @@ public class Menu {
 				return true;
 			}
 		}
-		/*for(int i = 0; i < menuPromoList.size();i++) {
-			String itemName = itemList.get(i).getItemName();
-			if(itemName.compareToIgnoreCase(name) == 0) {
-				System.out.println("Duplicate detected in list of Promotions. Please try again.");
-				return true;
-			}
-		}*/
 		return false;
 	}
 	
-	//Check promoList if have any duplicate promotional names
+	/**
+	   * Check promoList if have any duplicate promotional names
+	   * @param name reference name of item to search duplicate of
+	   * @return returns wether a duplicate is found or not
+	*/
 	private boolean checkPromoList(String name) {
 		for(Promotion pSet : menuPromoList) {
 			if(pSet.getPromoName().equals(name)) {
@@ -273,7 +258,11 @@ public class Menu {
 	}
 	
 
-	// Adds menu item to the list data structure, boolean asks if you want the item added to be printed
+	/**
+	   * Adds menu item to its list data structure
+	   * @param m menuitem to be added to the list of menu items
+	   * @param print if a notification should be printed after adding
+	*/
 	public void AddToItemList(MenuItem m, boolean print) {
 		itemList.add(m);
 
@@ -286,9 +275,13 @@ public class Menu {
 			System.out.println("");
 			PrintMenu();
 		}
-		//IncItemListSize();
 	}
 	
+	/**
+	   * Adds promotion to its list data structure
+	   * @param p object to be added to the list
+	   * @param print if a notification should be printed after adding
+	*/
 	public void AddToMenuPromoList(Promotion p, boolean print) {
 		menuPromoList.add(p);
 		if(print) {
@@ -298,11 +291,12 @@ public class Menu {
 			PrintFromPromoListItem(latestIndex);
 			System.out.println("=========================================================");
 			System.out.println("");
-			//PrintMenu();
 		}
-		//IncMenuPromoListSize();
 	}
 
+	/**
+	   * Serves as an interface to update for both promotion and menu item
+	*/
 	public void Update() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("(1) Update a Menu Item");
@@ -327,7 +321,10 @@ public class Menu {
 		}
 	}
 	
-	// Updates Menu item of specified index, also ask the user for input as to what to update
+	/**
+	   * Updates selected menu item of index
+	   * @param index index of item to be updated
+	*/
 	public void UpdateMenuItem(int index) {	
 		
 		Scanner sc = new Scanner(System.in);
@@ -378,6 +375,10 @@ public class Menu {
 		System.out.println("");
 	}
 	
+	/**
+	   * Updates selected promotion of index
+	   * @param index index of promotion to be updated
+	*/
 	public void UpdatePromotion(int index) {	
 		Scanner sc = new Scanner(System.in);
 		Promotion p = menuPromoList.get(index);
@@ -425,6 +426,9 @@ public class Menu {
 		System.out.println("");
 	}
 
+	/**
+	   * Interface for removing from any of the promotion and menu items list
+	*/
 	public void Remove() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("(1) Remove a Menu Item");
@@ -447,6 +451,10 @@ public class Menu {
 		}
 	}
 	
+	/**
+	   * Removes selected item of index from menu item list
+	   * @param index index of menu item to be removed
+	*/
 	public void RemoveFromItemList(int index) {
 		MenuItem m = itemList.get(index);
 		itemList.remove(index);
@@ -456,11 +464,12 @@ public class Menu {
 		PrintItem(m);
 		System.out.println("=========================================================");
 		System.out.println("");
-	
-		//DecItemListSize();
 	}
 	
-	//remove entire promotion Set from list
+	/**
+	   * Remove entire promotion Set from list
+	   * @param index index of promotion to be removed
+	*/
 	public void RemoveFromPromoList(int index) {
 		Promotion p = menuPromoList.get(index);
 		menuPromoList.remove(index);
@@ -469,12 +478,12 @@ public class Menu {
 		PrintPromotion(p);
 		System.out.println("=========================================================");
 		System.out.println("");
-	
-		//DecItemListSize();
 	}
 	
-	// Prints entire current itemList and promotion set
 	
+	/**
+	   * Prints entire current itemList and promotion set
+	*/
 	public void PrintMenu() {
 		System.out.println("");
 		System.out.println("==================== MENU ========================");
@@ -488,11 +497,6 @@ public class Menu {
 		System.out.println("");
 		System.out.println("==================== PROMOTIONS ========================");
 
-		 //Prints all promotion items in MENU
-		/*
-		for(int i =0; i < menuPromoList.size();i++) {
-			PrintFromPromotionalList(i);
-		}*/
 		printPromotionMenu();
 		
 		System.out.println("");
@@ -500,13 +504,19 @@ public class Menu {
 		System.out.println("");
 	}
 
-	// Prints only the selected index from item list
+
+	/**
+	   * Prints only the selected index from item list
+	   * @param index index of item from list to be printed
+	*/
 	public void PrintFromMenuListItem(int index) {
 		System.out.println("Item: " + (index+1));
 		PrintItem(itemList.get(index));
 	}
 	
-	//print entire promotion list menu only excluding promotion
+	/**
+	   * Prints only the item portion of the menu
+	*/
 	public void printItemsMenu() {
 		System.out.println("");
 		System.out.println("==================== MENU ========================");
@@ -521,9 +531,9 @@ public class Menu {
 	}
 	
 	
-	
-	
-	//print entire promotion list menu only
+	/**
+	   * Prints only the promotion portion of the menu
+	*/	
 	public void printPromotionMenu() {
 		System.out.println("");
 		System.out.println("==================== PROMOTION MENU ========================");
@@ -543,29 +553,21 @@ public class Menu {
 		System.out.println("");
 	}
 	
-	
-	//print every item in specific promotion set in detail
-	/*
-	public void PrintFromPromotionalList(int index) {
-		System.out.println("Promotional set: " + (index+1));
-		Promotion pSet = menuPromoList.get(index);
-		System.out.println("Promotion Set: " + pSet.getPromoName());
-		System.out.println("Promotion Set price " + pSet.getPromoPrice());
-		System.out.println();
-		System.out.println("Alacart price:");
-		for(MenuItem mItem : pSet.getPromoList()) {
-			PrintItem(mItem);
-		}
-	}	
+	/**
+	   * Prints selected index from promotion list
+	   * @param index to be printed
 	*/
-	
 	public void PrintFromPromoListItem(int index) {
 		System.out.println("");
 		System.out.println("Promotion: " + (index+1));
 	    PrintPromotion(menuPromoList.get(index));
 		System.out.println("");
 	}
-	// Prints Menu Item in stated format
+	
+	/**
+	   * Prints Menu Item in stated format
+	   * @param m object to be printed
+	*/
 	public void PrintItem(MenuItem m) {
 		System.out.println("");
 		System.out.println("Name: " + m.getItemName());
@@ -577,7 +579,10 @@ public class Menu {
 	
 
 
-	// Prints the specific promotion 
+	/**
+	   * Prints the specific promotion 
+	   * @param p object to be printed
+	*/
 	public void PrintPromotion(Promotion p) {
 		System.out.println("");
 		System.out.println("Promotion set: " +p.getPromoName());
@@ -587,118 +592,74 @@ public class Menu {
 		System.out.println("");
 	}
 
-	// Increment itemList size by 1
-	/*
-	public void IncItemListSize() {
-		System.out.println("called");
-		int size = getMenuSize();
-		size += 1;
-		setMenuSize(size);
-		PrintSize();
-	}
-	 */
-	// Increment promoList size by 1
 	
-	/*public void IncMenuPromoListSize() {
-		int size = getMenuPromoSize();
-		setPromoSize(size++);
-		PrintSize();
-	}*/
-	
-	/*
-	// Decrement itemList size by 1
-	public void DecItemListSize() {
-		int size = getMenuSize();
-		setMenuSize(size--);
-		PrintSize();
-	}
-	*/
-	// Decrement promoList size by 1
-	
-	/*public void DecMenuPromoListSize() {
-		int size = getMenuPromoSize();
-		setPromoSize(size--);
-		PrintSize();
-	}*/
 
-	// Prints current size of itemList & promoList
 	
+	/**
+	   * Prints current size of itemList and promoList
+	*/
 	public void PrintSize() {
 		System.out.println("---------------------------------------------------");
-		//System.out.println("ITEM SIZE = " + getMenuSize());
 		System.out.println("ITEM SIZE = " + getMainMenuSize());
-		//System.out.println("PROMOTION SIZE = " + getPromoSize());
-		//System.out.println("MENU SIZE = " + (getMenuSize() + getPromoSize()));
+		System.out.println("PROMOTION SIZE = " + getPromotionMenuSize());
 		System.out.println("---------------------------------------------------");
 	}
 
-	/*
-	 * I REPLACE ALL THE GET SIZE WITH SOMETHING EASIER MANAGE IF YOU OK
-	 * 
-	 * 
-	 */
+	
+	/**
+	   * Gets the size of the menu list
+	   * @return size of menu list
+	*/
 	public int getMainMenuSize() {
 		return itemList.size();
 	}
 	
-	private void updateMenuItemSize() {
-		menuItemSize = getMainMenuSize();
-	}
-	
+	/**
+	   * Gets the size of the promotion list
+	   * @return size of promotion list
+	*/
 	public int getPromotionMenuSize() {
 		return menuPromoList.size();
 	}
+
 	
-	private void updateMenuPromoSize() {
-		menuPromoSize = getPromotionMenuSize();
-	}
-	
-	// Getter Methods
-	/*
-	public int getMenuSize() {
-		return menuItemSize;
-	}
-*/
+	/**
+	   * Gets the list reference of the menu item list
+	   * @return menu item list
+	*/
 	public ArrayList<MenuItem> getItemList() {
 		return itemList;
 	}
 	
 
+	/**
+	   * Get specific menu item from list
+	   * @param index index reference
+	   * @return menu item to be returned
+	*/
 	public MenuItem getMenuItem(int index) {
 		//get item from array,array 0 base index
 		//item display from 1 onwards but start from 0 base index
 		return itemList.get(index);
 	}
 	
+	/**
+	   * Gets the list reference of the promotion list
+	   * @return promotion list
+	*/
 	public ArrayList<Promotion> getMenuPromoList() {
 		return menuPromoList;
 	}
 	
+	/**
+	   * Get specific promotion from list
+	   * @param index index reference
+	   * @return promotion to be returned
+	*/
 	public Promotion getPromotion(int index) {  
 		  //index 0 is first promotion 
 		  //but on display 1)promo 1 is index 0  
 		  //so typing 1 will give promotion 1 at index 0 
 		  return menuPromoList.get(index); 
 		 }
-
-	/*public int getMenuPromoSize() {
-		return promoSize;
-	}*/
-
-	// Setter Methods
-	/*
-	public void setMenuSize(int size) {
-		menuItemSize = size;
-	}
-	public void setItemList(ArrayList<MenuItem> list) {
-		itemList = list;
-	}
-*/
-	/*public void setMenuPromoList(ArrayList<Promotion> list) {
-		menuPromoList = list;
-	}*/
-
-	/*public void setMenuPromoSize(int size) {
-		promoSize = size;
-	}*/
 }
