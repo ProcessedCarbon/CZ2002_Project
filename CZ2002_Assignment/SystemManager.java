@@ -277,18 +277,31 @@ public class SystemManager
 		} while(choice < 19);
 	}
 	
+	/**
+	* Appends Customer Object to customerList
+	* @param cst Customer Object to be appended
+	*/
 	public void AppendCustomerToList(Customer cst) 
 	{
 		customerList.add(cst);
 		System.out.println(cst.getName() + " appended to customerList!");
 	}
 	
+	/**
+	* Appends Order Object to orderList
+	* @param order Order Object to be appended
+	*/ 
 	public void AppendOrderToList(Order order)
 	{
 		orderList.add(order);
 		System.out.println("Order appended to customerList!");
 	}
 
+	/**
+	* Finds a specific Order Object to be updated via Table Number
+	* @param tableIndex Table number of order to be updated 
+	* @param menu Menu Object to be use to update order
+	*/
 	public void getOrderToUpdate(int tableIndex, Menu menu)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -303,7 +316,11 @@ public class SystemManager
 		System.out.println("Order not found.");
 		return;
 	}
-
+	
+	/**
+	* Displays the order of a table via its table number 
+	* @param tableIndex Table number of order to be viewed 
+	*/
 	public void ViewOrder(int tableIndex)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -318,6 +335,9 @@ public class SystemManager
 		return;
 	}	
 
+	/**
+	* Displays orders of every table 
+	*/
 	public void ViewAllOrders()
 	{	
 		for (int i = 0; i < orderList.size(); i++)
@@ -327,6 +347,10 @@ public class SystemManager
 		return;
 	}
 	
+	/**
+	* Displays invoice of order via its table number
+	* @param tableIndex Table number of selected order 
+	*/
 	public void ViewOrderInvoice(int tableIndex)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -341,6 +365,13 @@ public class SystemManager
 		return;
 	}
 	
+	/**
+	* Makes payment of selected order via table number.
+	* Removes order from orderList.
+	* Appends order to paidOrderList.
+	* setOccupiedfalse() and setReserved(false) of table.
+	* @param tableIndex Table number of the order to be paid 
+	*/
 	public void MakePayment (int tableIndex)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -360,6 +391,12 @@ public class SystemManager
 		return;
 	}
 
+	/**
+	* Finds a free table
+	* A free Table must be both not occupied and not reserved 
+	* @param numOfPax Capacity of Seats
+	* @return Table number of free table
+	*/
 	public int FindFreeTable(int numOfPax)
 	{
 		for(int i = 0; i < tableList.size() ; i++)
@@ -374,6 +411,11 @@ public class SystemManager
 		return -1;
 	}
 
+	/**
+	* Reserves a table
+	* setReserved(true) of table
+	* @param tableIndex Table number of table to be reserved 
+	*/
 	public void ReserveTable(int tableIndex)
 	{
 		tableList.get(tableIndex).setReserved(true);
@@ -381,12 +423,25 @@ public class SystemManager
 		return;
 	}
 	
+	/**
+	* Occupies a table
+	* setOccupied(true) of table
+	* @param tableIndex Table number of table to be occupied 
+	*/
 	public void OccupyTable(int tableIndex)
 	{
 		tableList.get(tableIndex).setOccupied(true);
 		System.out.println("Table " + (tableIndex+1) + " occupied!");
 	}
 	
+	/**
+	* Occupies a free table based on number of pax
+	* Returns the table number that was occuped, if found.
+	* Otherwise, returns -1 if there are no free tables
+	* A free Table must be both not occupied and not reserved 
+	* @param numOfPax Capacity of Seats
+	* @return Table number that was occupied
+	*/
 	public int OccupyFreeTable(int numOfPax)
 	{
 		int tableIndex = FindFreeTable(numOfPax);
@@ -403,6 +458,9 @@ public class SystemManager
 		}	
 	}
 	
+	/**
+	* Views all table and its parameters
+	*/
 	public void ViewTable() 
 	{
 		System.out.println("===================================");
@@ -416,6 +474,10 @@ public class SystemManager
 		}
 	}
 
+	/**
+	* occupies the table that the customer has reserved
+	* @param name Name of customer that made the reservation
+	*/
 	public void fufilReservation(String name)
 	{
 		for (int i = 0; i < customerList.size(); i++)
@@ -431,6 +493,10 @@ public class SystemManager
 		return;
 	}
 	
+	/**
+	* View reservation of specific reservation and 
+	* @param tableIndex Table number of reservation
+	*/
 	public void ViewReservation(int tableIndex)
 	{
 		for(int i = 0; i < reservationList.size(); i++)
@@ -446,6 +512,9 @@ public class SystemManager
 		}
 	}
 	
+	/**
+	* View all reservation based on table numbers
+	*/
 	public void ViewAllReservation()
 	{
 		for(int i = 0; i < tableList.size(); i++) 
@@ -454,6 +523,10 @@ public class SystemManager
 			System.out.println("-------------------------");
 		}
 	}
+	
+	/**
+	* View all customers and their parameters
+	*/
 	public void ViewAllCustomer()
 	{
 		System.out.println("Viewing Customer...");
