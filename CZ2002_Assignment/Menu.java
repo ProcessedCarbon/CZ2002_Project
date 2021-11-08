@@ -690,7 +690,6 @@ public class Menu {
 	public void setMenuSize(int size) {
 		menuItemSize = size;
 	}
-
 	public void setItemList(ArrayList<MenuItem> list) {
 		itemList = list;
 	}
