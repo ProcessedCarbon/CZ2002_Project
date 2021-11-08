@@ -349,7 +349,7 @@ public class Order {
 	}
 	*/
 
-	/*
+	/**
 	* Asks user to add items to their order
 	* User will be asked to add alacarte items or promotion.
 	* Calls either addPromoItems() or addAlacarteItems().
@@ -381,7 +381,7 @@ public class Order {
 		} while(addchoice < 3);
 	}
 
-	/*
+	/**
 	* Asks user to remove items from their current order
 	* User will be asked to remove alacarte items or promotion.
 	* Calls either removePromoItems() or removeAlacarteItems().
@@ -410,7 +410,7 @@ public class Order {
 		} while(removechoice < 3);
 	}
 
-	/*
+	/**
 	* Asks user to add new alacarte item(s) to order
 	* Menu for alacarte items will be printed and user will be asked to input which item and quantity of item they want to add.
 	* Calls the addAlacarte() function to add each item to order
@@ -435,7 +435,7 @@ public class Order {
 		} while(additemnumber != -1);
 	}
 
-	/*
+	/**
 	* Asks user to remove alacarte item(s) that has been ordered
 	* User will be asked to input which alacarte item and quantity of alacarte item they want to remove.
 	* Calls the removeAlaCarte() function to remove each item from order
@@ -458,7 +458,7 @@ public class Order {
 		} while(removeitemnumber != -1);
 	}
 
-	/*
+	/**
 	* Asks user to add new promotion(s) to order
 	* Menu for promotions will be printed and user will be asked to input which promotion and quantity of promotion they want to add.
 	* Calls the addPromo() function to add each item to order
@@ -481,7 +481,7 @@ public class Order {
 		} while (addpromonumber != -1);
 	}
 
-	/*
+	/**
 	* Asks user to remove promotion(s) that has been ordered
 	* User will be asked to input which promotion and quantity of promotion they want to remove.
 	* Calls the removePromo() function to remove each item from order
@@ -504,7 +504,7 @@ public class Order {
 		} while(removepromonumber != -1);
 	}
 
-	/*
+	/**
 	* Adds a alacarte item to this order
 	* If alacarte item is already ordered, just add the quantity ordered to alacarteqty ArrayList
 	* Else, add the new alacarte item to alacarte ArrayList as a new element and also add the quantity to alacarteqty ArrayList as a new element
@@ -525,7 +525,7 @@ public class Order {
  		totalPrice += (dish.getItemPrice() * qty);
 	}
 
-	/*
+	/**
 	* Removes an alacarte item that has been ordered
 	* This will first subtract the quantity to be removed from the alacarteqty ArrayList
 	* If resulting quanitity is 0, then the alacarte item itself will be removed from alacarte ArrayList
@@ -546,7 +546,7 @@ public class Order {
 	}
 
 	
-	/*
+	/**
 	* Adds a promotion to this order
 	* If promotion is already ordered, just add the quantity ordered to promoqty ArrayList
 	* Else, add the new promotion to promo ArrayList as a new element and also add the quantity to promoqty ArrayList as a new element
@@ -567,7 +567,7 @@ public class Order {
 		totalPrice += (promotion.getOriginalPrice() * qty);
 	}
 
-	/*
+	/**
 	* Removes a promotion that has been ordered
 	* This will first subtract the quantity to be removed from the promoqty ArrayList
 	* If resulting quanitity is 0, then the promotion itself will be removed from promo ArrayList
@@ -586,7 +586,7 @@ public class Order {
 		totalPrice -= (promotion.getOriginalPrice() * qty);
 	}
 	
-	/*
+	/**
 	* Sets the name of the staff assigned to this order
 	* @param name of staff to add
 	*/
@@ -594,7 +594,7 @@ public class Order {
 		this.staffName = s;
 	}
 	
-	/*
+	/**
 	* Gets the name of the staff that is assigned to the order
 	* @return staff name
 	*/
@@ -602,7 +602,7 @@ public class Order {
 		return staffName;
 	}
 	
-	/*
+	/**
 	* Sets the time stamp of this order
 	* @param string of time stamp
 	*/
@@ -610,7 +610,7 @@ public class Order {
 		this.timeStamp = ts;
 	}
 	
-	/*
+	/**
 	* Gets the time stamp of the order
 	* @return time stamp of order
 	*/
@@ -618,7 +618,7 @@ public class Order {
 		return timeStamp;
 	}
 	
-	/*
+	/**
 	* Sets the table number of this order
 	* @param int of table number
 	*/
@@ -626,7 +626,7 @@ public class Order {
 		this.tableNo = i;
 	}	
 	
-	/*
+	/**
 	* Gets the table number of the order
 	* @return table number of order
 	*/
@@ -634,7 +634,7 @@ public class Order {
 		return tableNo;
 	}
 	
-	/*
+	/**
 	* Sets the discount applied to this order
 	* @param float of discount
 	*/
@@ -642,7 +642,7 @@ public class Order {
 		this.discount = d;
 	}
 	
-	/*
+	/**
 	* Gets the discount of order if customer is a member
 	* @return discount of order
 	*/
@@ -650,7 +650,7 @@ public class Order {
 		return discount;
 	}
 	
-	/*
+	/**
 	* Sets the taxes applied to this order ie. GST and/or service charge
 	* @param float of tax
 	*/
@@ -658,7 +658,7 @@ public class Order {
 		this.tax = tax;	
 	}	
 	
-	/*
+	/**
 	* Gets the tax applied to the order ie. GST and/or serivice charge
 	* @return tax applied
 	*/
@@ -666,7 +666,7 @@ public class Order {
 		return tax;	
 	}
 	
-	/*
+	/**
 	* Gets the total price of the order
 	* @return total price of order
 	*/
@@ -674,7 +674,7 @@ public class Order {
 		return totalPrice;
 	}
 	
-	/*
+	/**
 	* Gets the total price of the order after discount is applied
 	* @return total price after discount
 	*/
