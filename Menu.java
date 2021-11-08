@@ -1,4 +1,4 @@
-package TEST;
+package CZ2002_Assignment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -7,13 +7,14 @@ public class Menu {
 
 	private int menuItemSize = 0;
 	private int menuPromoSize = 0;
-	private ArrayList<MenuItem> itemList = new ArrayList<MenuItem> ();
+	private static ArrayList<MenuItem> itemList = new ArrayList<MenuItem> ();
 	
 	//array list of array list
-	private ArrayList<Promotion> menuPromoList = new ArrayList<Promotion> ();
+	private static ArrayList<Promotion> menuPromoList = new ArrayList<Promotion> ();
 
 	// testing purpose
-	/*public static void main (String[] args) {
+	/*
+	public static void main (String[] args) {
 		Menu menu = new Menu();
 		// Base list of predefined menuItems
 		menu.LoadBaseMenu();
@@ -30,10 +31,16 @@ public class Menu {
 				break;
 			}
 		}
+		
+		//menu.Update();
+		//menu.PrintMenu();
+		
+		//menu.CreateNewMenuItem();
 		System.out.println("testing remove");
 		menu.Remove();
 		menu.PrintMenu();
-	}*/
+	}
+	*/
 	
 	// Loads the base menu and concatenates the list of base menu items to current item list.
 	public void LoadBaseMenu() {
@@ -41,6 +48,9 @@ public class Menu {
 		itemList.addAll(bm.CreateBase());
 
 		PrintMenu();
+
+		//int size = getMenuSize();
+		//setMenuSize(size + bm.baseMenuSize());
 	}
 	
 	public void Create() {
@@ -240,6 +250,13 @@ public class Menu {
 				return true;
 			}
 		}
+		/*for(int i = 0; i < menuPromoList.size();i++) {
+			String itemName = itemList.get(i).getItemName();
+			if(itemName.compareToIgnoreCase(name) == 0) {
+				System.out.println("Duplicate detected in list of Promotions. Please try again.");
+				return true;
+			}
+		}*/
 		return false;
 	}
 	
@@ -269,6 +286,7 @@ public class Menu {
 			System.out.println("");
 			PrintMenu();
 		}
+		//IncItemListSize();
 	}
 	
 	public void AddToMenuPromoList(Promotion p, boolean print) {
@@ -280,8 +298,10 @@ public class Menu {
 			PrintFromPromoListItem(latestIndex);
 			System.out.println("=========================================================");
 			System.out.println("");
-=		}
-=	}
+			//PrintMenu();
+		}
+		//IncMenuPromoListSize();
+	}
 
 	public void Update() {
 		Scanner sc = new Scanner(System.in);
@@ -436,6 +456,8 @@ public class Menu {
 		PrintItem(m);
 		System.out.println("=========================================================");
 		System.out.println("");
+	
+		//DecItemListSize();
 	}
 	
 	//remove entire promotion Set from list
@@ -447,7 +469,9 @@ public class Menu {
 		PrintPromotion(p);
 		System.out.println("=========================================================");
 		System.out.println("");
-		}
+	
+		//DecItemListSize();
+	}
 	
 	// Prints entire current itemList and promotion set
 	
@@ -465,6 +489,10 @@ public class Menu {
 		System.out.println("==================== PROMOTIONS ========================");
 
 		 //Prints all promotion items in MENU
+		/*
+		for(int i =0; i < menuPromoList.size();i++) {
+			PrintFromPromotionalList(i);
+		}*/
 		printPromotionMenu();
 		
 		System.out.println("");
@@ -491,6 +519,9 @@ public class Menu {
 
 		System.out.println("");
 	}
+	
+	
+	
 	
 	//print entire promotion list menu only
 	public void printPromotionMenu() {
@@ -556,6 +587,40 @@ public class Menu {
 		System.out.println("");
 	}
 
+	// Increment itemList size by 1
+	/*
+	public void IncItemListSize() {
+		System.out.println("called");
+		int size = getMenuSize();
+		size += 1;
+		setMenuSize(size);
+		PrintSize();
+	}
+	 */
+	// Increment promoList size by 1
+	
+	/*public void IncMenuPromoListSize() {
+		int size = getMenuPromoSize();
+		setPromoSize(size++);
+		PrintSize();
+	}*/
+	
+	/*
+	// Decrement itemList size by 1
+	public void DecItemListSize() {
+		int size = getMenuSize();
+		setMenuSize(size--);
+		PrintSize();
+	}
+	*/
+	// Decrement promoList size by 1
+	
+	/*public void DecMenuPromoListSize() {
+		int size = getMenuPromoSize();
+		setPromoSize(size--);
+		PrintSize();
+	}*/
+
 	// Prints current size of itemList & promoList
 	
 	public void PrintSize() {
@@ -572,15 +637,6 @@ public class Menu {
 	 * 
 	 * 
 	 */
-	
-	
-	public Promotion getPromotion(int index) {	
-		//index 0 is first promotion
-		//but on display 1)promo 1 is index 0 
-		//so typing 1 will give promotion 1 at index 0
-		return menuPromoList.get(index - 1);
-	}
-	
 	public int getMainMenuSize() {
 		return itemList.size();
 	}
@@ -598,10 +654,15 @@ public class Menu {
 	}
 	
 	// Getter Methods
-
+	/*
+	public int getMenuSize() {
+		return menuItemSize;
+	}
+*/
 	public ArrayList<MenuItem> getItemList() {
 		return itemList;
 	}
+	
 
 	public MenuItem getMenuItem(int index) {
 		//get item from array,array 0 base index
@@ -612,4 +673,33 @@ public class Menu {
 	public ArrayList<Promotion> getMenuPromoList() {
 		return menuPromoList;
 	}
+	
+	public Promotion getPromotion(int index) {  
+		  //index 0 is first promotion 
+		  //but on display 1)promo 1 is index 0  
+		  //so typing 1 will give promotion 1 at index 0 
+		  return menuPromoList.get(index); 
+		 }
+
+	/*public int getMenuPromoSize() {
+		return promoSize;
+	}*/
+
+	// Setter Methods
+	/*
+	public void setMenuSize(int size) {
+		menuItemSize = size;
+	}
+
+	public void setItemList(ArrayList<MenuItem> list) {
+		itemList = list;
+	}
+*/
+	/*public void setMenuPromoList(ArrayList<Promotion> list) {
+		menuPromoList = list;
+	}*/
+
+	/*public void setMenuPromoSize(int size) {
+		promoSize = size;
+	}*/
 }

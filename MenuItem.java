@@ -1,4 +1,5 @@
-package TEST;
+package CZ2002_Assignment;
+
 public class MenuItem {
 
 	private String name;
