@@ -179,7 +179,9 @@ public class Order {
 	private float tax;
 	private Scanner sc = new Scanner(System.in);
 
-	// CONSTRUCTOR
+	/*
+	Default constructor for Order
+	*/
 	public Order(Staff s, LocalTime ts, int tn, float d) {
 		this.tax = 7;
 		this.staffName = s;
@@ -227,7 +229,11 @@ public class Order {
 	}
 	*/
 	
-	// ------------------------------------------------------------ //
+	/**
+	 * Creates a new instanc of order with some attribute inputs by user
+	 * @param menu, a list of all menuitems available 
+	 */
+	
 	public void createOrder(Menu menu) {
 		//String timestampToAdd;
 		int tablenoToAdd;
