@@ -629,10 +629,10 @@ public class SystemManager
 		tableList.add(table1);
 		Table table2 = new Table (2,false,false);
 		tableList.add(table2);
-		Table table3 = new Table (2,false,false);
-		tableList.add(table3);
-		Table table4 = new Table (2,false,false);
-		tableList.add(table4);
+		//Table table3 = new Table (2,false,false);
+		//tableList.add(table3);
+		//Table table4 = new Table (2,false,false);
+		//tableList.add(table4);
 		Table table5 = new Table (4,false,false);
 		tableList.add(table5);
 		Table table6 = new Table (4,false,false);
@@ -641,20 +641,20 @@ public class SystemManager
 		tableList.add(table7);
 		Table table8 = new Table (4,false,false);
 		tableList.add(table8);
-		Table table9 = new Table (4,false,false);
-		tableList.add(table9);
-		Table table10 = new Table (4,false,false);
-		tableList.add(table10);
+		//Table table9 = new Table (4,false,false);
+		//tableList.add(table9);
+		//Table table10 = new Table (4,false,false);
+		//tableList.add(table10);
 		Table table11 = new Table (6,false,false);
 		tableList.add(table11);
 		Table table12 = new Table (6,false,false);
 		tableList.add(table12);
 		Table table13 = new Table (8,false,false);
 		tableList.add(table13);
-		Table table14 = new Table (8,false,false);
-		tableList.add(table14);
-		Table table15 = new Table (10,false,false);
-		tableList.add(table15);
+		//Table table14 = new Table (8,false,false);
+		//tableList.add(table14);
+		//Table table15 = new Table (10,false,false);
+		//tableList.add(table15);
 	}
 
 }
