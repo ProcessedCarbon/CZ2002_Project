@@ -682,7 +682,7 @@ public class Order {
 		return ((getTotalPrice()) * ((100 - getDiscount()) / 100 ));
 	}
 	
-	/*
+	/**
 	* Gets the total price of the order after tax is applied
 	* @return total price after taxes
 	*/
