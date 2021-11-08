@@ -14,7 +14,7 @@ public class Reservation {
 	public Reservation(String date, LocalTime time, int pax, Customer customer, int tableNo)
 	{
 		this.date = date;
-		this.time = LocalTime.parse("09:00");
+		this.time = time;
 		this.pax = pax;
 		this.customer = customer;
 		this.tableNo = tableNo;
