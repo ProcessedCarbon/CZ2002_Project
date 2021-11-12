@@ -1,8 +1,18 @@
 package CZ2002_Assignment;
 
+/**
+* Entity Class for Tables in the Restaurant
+* Tables store data for Seat Capacity, Occupation and Reservation Status
+*/
 public class Table {
 	private int SeatCapacity;
 	private boolean isOccupied, isReserved;
+	/**
+	* Constructor for Table Class
+	* @param seatCapacity number of maximum seats the Table can contain
+	* @param isOccupied boolean to indicate whether Table is occupied
+	* @param isReserved boolean to indicate whether Table is reserved
+	*/
 	public Table(int seatCapacity, boolean isOccupied, boolean isReserved) {
 		super();
 		this.SeatCapacity = seatCapacity;
