@@ -112,7 +112,7 @@ public class SystemManager
 						System.out.println("Order Created!");
 						break;
 					}
-					System.out.println(tempStr + " not found in staffList.");
+					if(i == staffList.size() - 1) System.out.println(tempStr + " not found in staffList.");
 				}
 				break;
 
@@ -248,7 +248,7 @@ public class SystemManager
 			case 17: // OCCUPY TABLE - FOR RESERVED CUSTOMERS //
 				sc.nextLine();
 				System.out.println("=========================");
-				sys.ViewAllCustomer();
+				sys.ViewAllReservation();
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
 				for (int i=0; i < reservationList.size(); i++)
