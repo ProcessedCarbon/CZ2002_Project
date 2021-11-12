@@ -1,10 +1,20 @@
 package CZ2002_Assignment;
 
 import java.util.Scanner;
-
+/**
+* Entity Class for Staff in the Restaurant
+* Stores information on staff particulars
+*/
 public class Staff {
 	private String name, gender, jobTitle;
 	private int emp_id;
+	/**
+	*Constructor for Class
+	* @param name Name of Staff
+	* @param gender Gender of Staff
+	* @param jobTitle Job Title of Staff
+	* @param emp_id Staff's employee ID
+	*/
 	public Staff(String name, String gender, String jobTitle, int emp_id) {
 		super();
 		this.name = name;
