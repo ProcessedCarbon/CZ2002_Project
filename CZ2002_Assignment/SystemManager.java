@@ -73,7 +73,7 @@ public class SystemManager
 				
 			case 2: // MENU UPDATE //
 				menu.Update();
-				
+				break;
 				
 			case 3: // MENU REMOVAL //
 				menu.Remove();
@@ -234,6 +234,7 @@ public class SystemManager
 
 			case 16: // OCCUPY TABLE - FOR WALK IN CUSTOMERS //
 				sc.nextLine();
+				Boolean cstFound = false;
 				System.out.println("=========================");
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
@@ -245,9 +246,10 @@ public class SystemManager
 						numOfPax = sc.nextInt();
 						tableIndex = sys.OccupyFreeTable(numOfPax);
 						customerList.get(i).setTableNo(tableIndex); 
+						cstFound = true;
 						break;
 					}
-					System.out.println("All tables occupied.");
+					if(!cstFound)System.out.println("All tables occupied.");
 				}
 				break;
 				
@@ -293,7 +295,7 @@ public class SystemManager
 	public void AppendCustomerToList(Customer cst) 
 	{
 		customerList.add(cst);
-		System.out.println(cst.getName() + " appended to customerList!");
+		// System.out.println(cst.getName() + " appended to customerList!");
 	}
 	
 	/**
@@ -303,7 +305,7 @@ public class SystemManager
 	public void AppendOrderToList(Order order)
 	{
 		orderList.add(order);
-		System.out.println("Order appended to customerList!");
+		// System.out.println("Order appended to customerList!");
 	}
 
 	/**
@@ -478,7 +480,7 @@ public class SystemManager
 		{
 			System.out.println("Table Number " + (i+1));
 			System.out.println("Table Size: " + tableList.get(i).getSeatCapacity()) ;
-			System.out.println("Reserved: " + tableList.get(i).isReserved() + " Occupied: " + tableList.get(i).isOccupied());
+			System.out.println("Reserved: " + tableList.get(i).isReserved() + " | Occupied: " + tableList.get(i).isOccupied());
 			System.out.println("===================================");
 		}
 	}
@@ -494,7 +496,7 @@ public class SystemManager
 			if(name.equals(customerList.get(i).getName()))
 			{
 				OccupyTable(customerList.get(i).getTableNo());
-				System.out.println("Reservation for" + name + " Fulfilled.");
+				System.out.println("Reservation fulfilled for" + name + ".");
 				return;
 			}
 		}
@@ -568,7 +570,7 @@ public class SystemManager
  	public void AppendReservationToList(Reservation rsv)
 	{
 		reservationList.add(rsv);
-		System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " appended to List");
+		//System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " appended to List");
 	}
 
 	/**
@@ -730,8 +732,8 @@ public class SystemManager
 		// MENU //////////////////////////////////
 
 		System.out.println("1:  Create Menu");
-		System.out.println("2:  Remove Menu");
-		System.out.println("3:  Update Menu");
+		System.out.println("2:  Update Menu");
+		System.out.println("3:  Remove Menu");
 		System.out.println("4:  View Menu");
 
 		// CUSTOMER //////////////////////////////
