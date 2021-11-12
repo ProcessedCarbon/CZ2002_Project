@@ -30,22 +30,10 @@ public class Menu {
 		System.out.println("(2) Create New Promotion");
 		InputChecker ic = new InputChecker();
 
-		int choice = 0;
-		boolean choiceBool = false;
-		for(int k = 0; k < ic.getNumOfTries(); k++) {
-			choice = ic.intChecker(choice, sc);
-			if(choice == -1 || !ic.inRange(choice, -1, 10000)) {
-				System.out.println("Invalid input for price, Number of tries: " + (k + 1));
-				sc.nextLine();
-				continue;
-			}
-			else {
-				choiceBool = true;
-				break;
-			}
-		}
+		int choice = -1;
+		choice = ic.intChecker(choice, sc, -1, 100000);
 
-		if(!choiceBool) {
+		if(choice == -1) {
 			System.out.println("Exceeded number of tries, exiting");
 			return;
 		}
@@ -105,22 +93,9 @@ public class Menu {
 			// Read Price
 			System.out.println("Price:");
 			double price = 0;
-			boolean priceBool = false;
-			for(int k = 0; k < ic.getNumOfTries(); k++) {
-				price = ic.doubleChecker(price, sc);
-
-				if(price == -1 || !ic.inRange(price, 0, 10000)) {
-					System.out.println("Invalid input for price, Number of tries: " + (k + 1));
-					sc.nextLine();
-					continue;
-				}
-				else {
-					priceBool = true;
-					break;
-				}
-			}
-
-			if(!priceBool) {
+			price = ic.doubleChecker(price, sc, 0.1, 10000);
+			
+			if(price == -1) {
 				System.out.println("Exceeded number of tries, exiting");
 				break;
 			}
@@ -129,8 +104,15 @@ public class Menu {
 			sc.nextLine();
 
 			// Read category 
-			System.out.println("Category:");
-			MenuCategory category = MenuCategory.valueOf(sc.nextLine().toUpperCase());
+			System.out.println("Category (MAINS/ SIDES/ DESSERTS/ DRINKS):");
+			
+			MenuCategory category = null;
+			category = ic.categoryChecker(category, sc);
+
+			if(category == null) {
+				System.out.println("Exceeded number of tries, exiting");
+				break;
+			}
 
 			// Creates menuItem to be added
 			MenuItem m = new MenuItem(itemName,desp,price,category);
@@ -138,7 +120,7 @@ public class Menu {
 		}
 		//sc.close();
 	}
-
+	
 	/**
 	 * Interface to create new instance of a promotion object in the menu
 	 */
@@ -174,11 +156,11 @@ public class Menu {
 					continue;
 				}
 				else {
-					System.out.println("Exiting, sucessful previous Promotions Set added will reamain in the list");
+					System.out.println("Exiting, sucessful previous Promotions Set added will remain in the list");
 					return;
 				}
 			}
-			System.out.println("Size of new Promotional set");
+			System.out.println("Size of new Promotional Set");
 			int size = sc.nextInt();
 
 			Promotion curPromoSet = new Promotion();
@@ -204,30 +186,30 @@ public class Menu {
 		InputChecker ic = new InputChecker();
 
 		for(int j = 0;j<size;j++) {
-			System.out.printf("Cur Promotion Set item no. %d\n",j + 1);
-			System.out.println("Add mene Item(s) to Promotion Set or unique Promotional Item");
+			System.out.printf("Current Promotion Set item no. %d\n",j + 1);
+			System.out.println("Add Menu Item(s) to Promotion Set or Unique Promotional Item(s)");
 			System.out.println("(1) Add Selected Item(s) from menu to Promotion Set");
 			System.out.println("(2) Unique Promotional Item(s)");
 			int option = sc.nextInt();
 			if(option == 1) {
 				//display menu and add item to promotional Set
 				printItemsMenu();
-				System.out.println("Select menu item number to add to current Promotion Set");
+				System.out.println("Select Menu Item number to add to current Promotion Set");
 				int itemNo = sc.nextInt();
 				//0 base index recall
 				MenuItem itemTobeAdded = itemList.get(itemNo -1);
 				curPromoSet.addMenuItem(itemTobeAdded);
 			}
 			else if (option == 2) {
-				System.out.println("Enter unique item");
-				System.out.println("name:");
+				System.out.println("Enter Unique Item");
+				System.out.println("Name:");
 				sc.nextLine();
 				String itemName = sc.nextLine();
 
 				// If item enter already in menu
 				if(CheckList(itemName)) {
 
-					System.out.println("Item already in menu not unique please use option 1 for this item!!!");
+					System.out.println("Item already in menu, not unique please use option 1 for this item!!!");
 					j = j - 1; //no count so can retry
 					continue;
 				}
@@ -239,23 +221,10 @@ public class Menu {
 				// Read Price
 				System.out.println("Price:");
 				//double price = sc.nextDouble();
-				double price = 0;
-				boolean priceBool = false;
-				for(int k = 0; k < ic.getNumOfTries(); k++) {
-					price = ic.doubleChecker(price, sc);
+				double price = -1;
+				price = ic.doubleChecker(price, sc, 0.1, 10000);
 
-					if(price == -1 || !ic.inRange(price, 0, 10000)) {
-						System.out.println("Invalid input for price, Number of tries: " + (k + 1));
-						sc.nextLine();
-						continue;
-					}
-					else {
-						priceBool = true;
-						break;
-					}
-				}
-
-				if(!priceBool) {
+				if(price == -1) {
 					System.out.println("Exceeded number of tries, exiting");
 					break;
 				}
@@ -263,16 +232,21 @@ public class Menu {
 				sc.nextLine();
 
 				// Read category 
-				System.out.println("Category:");
-				MenuCategory category = MenuCategory.valueOf(sc.nextLine().toUpperCase());
+				System.out.println("Category (MAINS/ SIDES/ DESSERTS/ DRINKS):");
+				MenuCategory category = null;
+				category = ic.categoryChecker(category, sc);
 
+				if(category == null) {
+					System.out.println("Exceeded number of tries, exiting");
+					break;
+				}
 				// Creates menuItem to be added
 				MenuItem itemTobeAdded = new MenuItem(itemName,desp,price,category);
 				curPromoSet.addMenuItem(itemTobeAdded);
 			}
 		}
 		//Set the current promotional set price 
-		System.out.println("current promotion set price base on original item price: $%.2f" + curPromoSet.getOriginalPrice());
+		System.out.println("Current promotion set price base on original item price: $%.2f" + curPromoSet.getOriginalPrice());
 		System.out.println("Set current promotion Set price: ");
 		double curPromoPrice = sc.nextDouble();
 		curPromoSet.setPromoPrice(curPromoPrice);
@@ -467,7 +441,7 @@ public class Menu {
 			int itemIndex = sc.nextInt();
 			p.getPromoList().remove(itemIndex -1);
 			//Set the current promotional set price 
-			System.out.println("current promotion set price base on original item price: $" + p.getOriginalPrice());
+			System.out.println("Current promotion set price base on original item price: $%.2f" + p.getOriginalPrice());
 			System.out.println("Set current promotion Set price: ");
 			double curPromoPrice = sc.nextDouble();
 			p.setPromoPrice(curPromoPrice);
@@ -639,7 +613,7 @@ public class Menu {
 	public void PrintPromotion(Promotion p) {
 		System.out.println("");
 		System.out.println("Promotion set: " +p.getPromoName());
-		System.out.println("Promotion set price: " + p.getPromoPrice());
+		System.out.println("Promotion set price: $%.2f" + p.getPromoPrice());
 		System.out.println("Ala cart price");
 		p.displayPromotionItems();
 		System.out.println("");
