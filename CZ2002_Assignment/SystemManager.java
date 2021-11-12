@@ -528,7 +528,7 @@ public class SystemManager
 	{
 		for(int i = 0; i < tableList.size(); i++) 
 		{						
-			ViewReservation(i+1);
+			ViewReservation(i);
 			System.out.println("-------------------------");
 		}
 	}
