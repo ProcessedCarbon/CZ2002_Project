@@ -3,14 +3,23 @@ package CZ2002_Assignment;
 import java.util.Scanner; // TODO: Add this
 
 /**
-* Customer Class
+* Entity Class for Customer Object
+* Customer contains information on customer and the table they are assigned to
 */
 public class Customer {
 	private String Name, Gender;
-	private int Contact; // TODO: private int Gender -> private String Gender
+	private int Contact;
 	private boolean Membership;
-	private int tableNo; // TODO: ADDED
-	public Customer(String name, String gender, int contact, boolean membership, int tableNo) { // TODO: int gender -> String Gender
+	private int tableNo;
+	/**
+	* Constructor of Customer Class
+	* @param name customer's name
+	* @param gender customer's gender
+	* @param contact customer's contact number
+	* @param membership customer's memebership status
+	* @param tableNo table number that customer is assigned to
+	*/
+	public Customer(String name, String gender, int contact, boolean membership, int tableNo) {
 		super();
 		this.Name = name;
 		this.Gender = gender;
@@ -19,7 +28,9 @@ public class Customer {
 		this.tableNo = tableNo;
 	}
 	
-	// TODO: CreateCustomer() <- Add this function
+	/**
+	* Allows user to input information to create a Customer object
+	*/
 	public void CreateCustomer() 
 	{
 		int tempInt;
@@ -52,10 +63,10 @@ public class Customer {
 	public void setName(String name) {
 		Name = name;
 	}
-	public String getGender() {	// TODO: int getGender() -> String getGender()
+	public String getGender() {
 		return Gender;
 	}
-	public void setGender(String gender) {  // TODO: (int gender) -> (String gender)
+	public void setGender(String gender) {  
 		Gender = gender;
 	}
 	public int getContact() {
