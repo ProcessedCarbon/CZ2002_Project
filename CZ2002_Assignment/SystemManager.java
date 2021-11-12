@@ -270,7 +270,7 @@ public class SystemManager
 				/////////////////////////////////////////////
 
 			}
-		} while(choice < 19);
+		} while(choice <= 19);
 	}
 	
 	/**
