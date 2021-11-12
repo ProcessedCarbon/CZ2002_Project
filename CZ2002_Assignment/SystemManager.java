@@ -669,7 +669,7 @@ public class SystemManager
 		System.out.println("=========================");
 		System.out.println("(1) View");
 		System.out.println("(2) Set Time Manually");
-		System.out.println("(3) Advance time by Hours");
+		System.out.println("(3) Advance time by Minutes");
 		System.out.println("(4) Advance time by Hours");
 		System.out.println("(5) Exit");
 		System.out.println("=========================");
