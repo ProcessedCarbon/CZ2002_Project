@@ -5,30 +5,30 @@ import java.util.Scanner;
 import java.time.*;
 
 /**
-* Main controller of the system
-* Collects information from other class and outputs to console application
-*/
+ * Main controller of the system
+ * Collects information from other class and outputs to console application
+ */
 public class SystemManager
 {
-	
+
 	static ArrayList<Table> tableList = new ArrayList<Table>();
- 	static ArrayList<Order> orderList = new ArrayList<Order>();
+	static ArrayList<Order> orderList = new ArrayList<Order>();
 	static ArrayList<Order> paidOrderList = new ArrayList<Order>();
 	static ArrayList<Customer> customerList = new ArrayList<Customer>();
 	static ArrayList<Staff> staffList = new ArrayList<Staff>();
 	static ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
 
-	
+
 	/**
-	* Main function of the program
-	* @param args args
-	*/
+	 * Main function of the program
+	 * @param args args
+	 */
 	public static void main(String[] args)
 	{
 		SystemManager sys = new SystemManager();
 
 		LocalTime currentTime = LocalTime.parse("09:00");
-		
+
 		String tempStr;
 
 		Menu menu = new Menu(); // MENU
@@ -44,9 +44,9 @@ public class SystemManager
 		System.out.println("Do you want to use a pre-made menu (0/1)?");
 		choice = sc.nextInt();
 
-			if(choice == 1)
-				menu.LoadBaseMenu();
-			
+		if(choice == 1)
+			menu.LoadBaseMenu();
+
 		// Load Pre Made Staff	
 		sys.LoadStaff(); 
 		sys.LoadTable();
@@ -70,28 +70,28 @@ public class SystemManager
 			case 1: // MENU CREATION //
 				menu.Create();
 				break;
-				
+
 			case 2: // MENU UPDATE //
 				menu.Update();
 				break;
-				
+
 			case 3: // MENU REMOVAL //
 				menu.Remove();
 				break;
-				
+
 			case 4: 
 				menu.PrintMenu();
 				break;
-				
+
 				// --- CUSTOMER --- //
-				
+
 			case 5: // CREATE CUSTOMER //
 				Customer cst = new Customer("","",1,true,-1);
 				cst.CreateCustomer();
 				System.out.println(cst.getName() + " created.");
 				sys.AppendCustomerToList(cst); 
 				break;
-				
+
 				// --- ORDER --- //
 
 			case 6: // CREATE ORDER // 
@@ -101,7 +101,7 @@ public class SystemManager
 				sys.ViewAllStaff();
 				System.out.println("Enter Staff Name: ");
 				tempStr = sc.nextLine();
-				
+
 				for(int i = 0; i < staffList.size(); i++)
 				{
 					if(tempStr.equals(staffList.get(i).getName())) 
@@ -131,7 +131,7 @@ public class SystemManager
 				tableIndex = sc.nextInt();
 				sys.ViewOrder(tableIndex);
 				break;
-				
+
 			case 9: // VIEW ALL ORDERS //
 				System.out.println("=========================");
 				System.out.println("Viewing All Orders...");
@@ -170,7 +170,7 @@ public class SystemManager
 				System.out.println("Creating New Reservation...");
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
-				
+
 				for(int i = 0; i < customerList.size(); i++)
 				{
 					//System.out.println("Size: "+ customerList.size());
@@ -183,17 +183,25 @@ public class SystemManager
 						Reservation rsv = new Reservation("",LocalTime.parse(temp),-1,customerList.get(i),-1);
 						rsv.createReservation();
 						//System.out.println("Time: " + rsv.getReservationTime());
-						
+
 						int index = sys.FindFreeTable(rsv.getReservationPax());
-						
-						rsv.setReservationTable(index);
-						sys.ReserveTable(index);
-						
-						sys.AppendReservationToList(rsv);
-						System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " created!");
-						break;
+
+						if(index != -1) 
+						{
+							rsv.setReservationTable(index);
+							sys.ReserveTable(index);
+							sys.AppendReservationToList(rsv);
+							System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " created!");
+							break;
+						}
+						else
+						{
+							System.out.println("Reservation failed.");
+							break;
+						}
+
 					}
-					
+
 				}
 				// System.out.println(tempStr + " not found in customerList.");
 				break;
@@ -202,17 +210,17 @@ public class SystemManager
 				sys.RemoveReservation();
 
 				break;
-				
+
 			case 15:
 				System.out.println("=========================");
 				System.out.println("Viewing All Reservation...");
 				sys.ViewAllReservation();
-				
-			break;
-				
-	
-				
-				
+
+				break;
+
+
+
+
 				// --- OCCUPY TABLE --- //
 
 			case 16: // OCCUPY TABLE - FOR WALK IN CUSTOMERS //
@@ -236,7 +244,7 @@ public class SystemManager
 					if(!cstFound)System.out.println("All tables occupied.");
 				}
 				break;
-				
+
 			case 17: // OCCUPY TABLE - FOR RESERVED CUSTOMERS //
 				sc.nextLine();
 				System.out.println("=========================");
@@ -254,11 +262,11 @@ public class SystemManager
 					}
 				}
 				break;
-				
+
 			case 18:
 				currentTime = sys.TimeOptions(currentTime);
 				break;
-				
+
 			case 19: // View Total Revenue
 				sys.ViewTotalRevenue();
 				break;
@@ -270,23 +278,23 @@ public class SystemManager
 				/////////////////////////////////////////////
 
 			}
-		} while(choice <= 19);
+		} while(choice < 19);
 	}
-	
+
 	/**
-	* Appends Customer Object to customerList
-	* @param cst Customer Object to be appended
-	*/
+	 * Appends Customer Object to customerList
+	 * @param cst Customer Object to be appended
+	 */
 	public void AppendCustomerToList(Customer cst) 
 	{
 		customerList.add(cst);
 		// System.out.println(cst.getName() + " appended to customerList!");
 	}
-	
+
 	/**
-	* Appends Order Object to orderList
-	* @param order Order Object to be appended
-	*/ 
+	 * Appends Order Object to orderList
+	 * @param order Order Object to be appended
+	 */ 
 	public void AppendOrderToList(Order order)
 	{
 		orderList.add(order);
@@ -294,10 +302,10 @@ public class SystemManager
 	}
 
 	/**
-	* Finds a specific Order Object to be updated via Table Number
-	* @param tableIndex Table number of order to be updated 
-	* @param menu Menu Object to be use to update order
-	*/
+	 * Finds a specific Order Object to be updated via Table Number
+	 * @param tableIndex Table number of order to be updated 
+	 * @param menu Menu Object to be use to update order
+	 */
 	public void getOrderToUpdate(int tableIndex, Menu menu)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -312,11 +320,11 @@ public class SystemManager
 		System.out.println("Order not found.");
 		return;
 	}
-	
+
 	/**
-	* Displays the order of a table via its table number 
-	* @param tableIndex Table number of order to be viewed 
-	*/
+	 * Displays the order of a table via its table number 
+	 * @param tableIndex Table number of order to be viewed 
+	 */
 	public void ViewOrder(int tableIndex)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -332,8 +340,8 @@ public class SystemManager
 	}	
 
 	/**
-	* Displays orders of every table 
-	*/
+	 * Displays orders of every table 
+	 */
 	public void ViewAllOrders()
 	{	
 		for (int i = 0; i < orderList.size(); i++)
@@ -342,11 +350,11 @@ public class SystemManager
 		}
 		return;
 	}
-	
+
 	/**
-	* Displays invoice of order via its table number
-	* @param tableIndex Table number of selected order 
-	*/
+	 * Displays invoice of order via its table number
+	 * @param tableIndex Table number of selected order 
+	 */
 	public void ViewOrderInvoice(int tableIndex)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -360,14 +368,14 @@ public class SystemManager
 		System.out.println("Order not found.");
 		return;
 	}
-	
+
 	/**
-	* Makes payment of selected order via table number.
-	* Removes order from orderList.
-	* Appends order to paidOrderList.
-	* setOccupiedfalse() and setReserved(false) of table.
-	* @param tableIndex Table number of the order to be paid 
-	*/
+	 * Makes payment of selected order via table number.
+	 * Removes order from orderList.
+	 * Appends order to paidOrderList.
+	 * setOccupiedfalse() and setReserved(false) of table.
+	 * @param tableIndex Table number of the order to be paid 
+	 */
 	public void MakePayment (int tableIndex)
 	{
 		for (int i = 0; i < orderList.size(); i++)
@@ -388,11 +396,11 @@ public class SystemManager
 	}
 
 	/**
-	* Finds a free table
-	* A free Table must be both not occupied and not reserved 
-	* @param numOfPax Capacity of Seats
-	* @return Table number of free table
-	*/
+	 * Finds a free table
+	 * A free Table must be both not occupied and not reserved 
+	 * @param numOfPax Capacity of Seats
+	 * @return Table number of free table
+	 */
 	public int FindFreeTable(int numOfPax)
 	{
 		for(int i = 0; i < tableList.size() ; i++)
@@ -402,50 +410,50 @@ public class SystemManager
 				System.out.println("Table " + (i+1) + " is free");
 				return i;
 			}
-		 }
+		}
 		System.out.println("No tables are free.");
 		return -1;
 	}
 
 	/**
-	* Reserves a table
-	* setReserved(true) of table
-	* @param tableIndex Table number of table to be reserved 
-	*/
+	 * Reserves a table
+	 * setReserved(true) of table
+	 * @param tableIndex Table number of table to be reserved 
+	 */
 	public void ReserveTable(int tableIndex)
 	{
 		tableList.get(tableIndex).setReserved(true);
 		System.out.println("Table " + (tableIndex+1) + " reserved");
 		return;
 	}
-	
+
 	/**
-	* Occupies a table
-	* setOccupied(true) of table
-	* @param tableIndex Table number of table to be occupied 
-	*/
+	 * Occupies a table
+	 * setOccupied(true) of table
+	 * @param tableIndex Table number of table to be occupied 
+	 */
 	public void OccupyTable(int tableIndex)
 	{
 		tableList.get(tableIndex).setOccupied(true);
 		System.out.println("Table " + (tableIndex+1) + " occupied!");
 	}
-	
+
 	/**
-	* Occupies a free table based on number of pax
-	* Returns the table number that was occuped, if found.
-	* Otherwise, returns -1 if there are no free tables
-	* A free Table must be both not occupied and not reserved 
-	* @param numOfPax Capacity of Seats
-	* @return Table number that was occupied
-	*/
+	 * Occupies a free table based on number of pax
+	 * Returns the table number that was occuped, if found.
+	 * Otherwise, returns -1 if there are no free tables
+	 * A free Table must be both not occupied and not reserved 
+	 * @param numOfPax Capacity of Seats
+	 * @return Table number that was occupied
+	 */
 	public int OccupyFreeTable(int numOfPax)
 	{
 		int tableIndex = FindFreeTable(numOfPax);
-		
+
 		if(tableIndex != -1)
 		{
-			 OccupyTable(tableIndex);
-			 return tableIndex;
+			OccupyTable(tableIndex);
+			return tableIndex;
 		}
 		else
 		{
@@ -453,10 +461,10 @@ public class SystemManager
 			return -1;
 		}	
 	}
-	
+
 	/**
-	* Views all table and its parameters
-	*/
+	 * Views all table and its parameters
+	 */
 	public void ViewTable() 
 	{
 		System.out.println("===================================");
@@ -471,9 +479,9 @@ public class SystemManager
 	}
 
 	/**
-	* occupies the table that the customer has reserved
-	* @param name Name of customer that made the reservation
-	*/
+	 * occupies the table that the customer has reserved
+	 * @param name Name of customer that made the reservation
+	 */
 	public void fufilReservation(String name)
 	{
 		for (int i = 0; i < customerList.size(); i++)
@@ -488,11 +496,11 @@ public class SystemManager
 		System.out.println(name + " not found.");
 		return;
 	}
-	
+
 	/**
-	* View reservation of specific reservation and 
-	* @param tableIndex Table number of reservation
-	*/
+	 * View reservation of specific reservation and 
+	 * @param tableIndex Table number of reservation
+	 */
 	public void ViewReservation(int tableIndex)
 	{
 		for(int i = 0; i < reservationList.size(); i++)
@@ -507,10 +515,10 @@ public class SystemManager
 			}
 		}
 	}
-	
+
 	/**
-	* View all reservation based on table numbers
-	*/
+	 * View all reservation based on table numbers
+	 */
 	public void ViewAllReservation()
 	{
 		for(int i = 0; i < tableList.size(); i++) 
@@ -519,10 +527,10 @@ public class SystemManager
 			System.out.println("-------------------------");
 		}
 	}
-	
+
 	/**
-	* Prints all valid customers in a single line
-	*/
+	 * Prints all valid customers in a single line
+	 */
 	public void ViewAllCustomer()
 	{
 		System.out.println("Viewing Customer...");
@@ -533,10 +541,10 @@ public class SystemManager
 		System.out.println();
 		System.out.println("-------------------------");
 	}
-	
+
 	/**
-	* Prints all valid staffs in a single line 
-	*/
+	 * Prints all valid staffs in a single line 
+	 */
 	public void ViewAllStaff()
 	{
 		System.out.println("Viewing Staff...");
@@ -547,26 +555,26 @@ public class SystemManager
 		System.out.println();
 		System.out.println("-------------------------");
 	}
-	
+
 	/**
-	* Append Reservation Object to reservationList
-	* @param rsv Reservation Object to be appended
-	*/
- 	public void AppendReservationToList(Reservation rsv)
+	 * Append Reservation Object to reservationList
+	 * @param rsv Reservation Object to be appended
+	 */
+	public void AppendReservationToList(Reservation rsv)
 	{
 		reservationList.add(rsv);
 		//System.out.println("Reservation for " + rsv.getReservationCustomer().getName() + " appended to List");
 	}
 
 	/**
-	* Remove Reservation Object of specific reservation from the reservation List
-	* setReserved(false) of specific reserved table
-	*/
+	 * Remove Reservation Object of specific reservation from the reservation List
+	 * setReserved(false) of specific reserved table
+	 */
 	public void RemoveReservation()
 	{		
 		String tempStr;
 		Scanner sc = new Scanner(System.in);
-		
+
 		System.out.println("=========================");
 		System.out.println("Removing Reservation...");
 		System.out.println("Enter Customer Name: ");
@@ -585,11 +593,11 @@ public class SystemManager
 	}
 
 	/**
-	* Checks all Reservation Objects in reservationList and times out expired reservations
-	* Expired reservations are reservations that exceed the maxTime
-	* maxTime = Reservation Time + Max Time Limit
-	* @param currentTime Current Time of System
-	*/
+	 * Checks all Reservation Objects in reservationList and times out expired reservations
+	 * Expired reservations are reservations that exceed the maxTime
+	 * maxTime = Reservation Time + Max Time Limit
+	 * @param currentTime Current Time of System
+	 */
 	public void CheckForTimeOut(LocalTime currentTime)
 	{		
 		int maxTimeDuration = 30;
@@ -621,11 +629,11 @@ public class SystemManager
 
 			}
 		}
-		
+
 	}
 	/**
-	* Loops through paidOrderList and sums the total revenue generated.
-	*/
+	 * Loops through paidOrderList and sums the total revenue generated.
+	 */
 	public void ViewTotalRevenue()
 	{
 		System.out.println("=========================");
@@ -637,20 +645,19 @@ public class SystemManager
 
 		for(int i = 0; i < paidOrderList.size(); i++)
 		{
-			
+			paidOrderList.get(i).printOrderItemsWoList();
 			totalRevenue += paidOrderList.get(i).getTotalPriceAfterTax();
 		}
-		
+
 		System.out.println("Total Revenue = $" + totalRevenue ); 
 	}
-	
 	/**
-	* Time options for currentTime variable
-	* Time can be view or modified
-	* Each time the currentTime is modified, CheckForTimeOut() will be triggered.
-	* @param currentTime Current Time of the System
-	* @return the modified time
-	*/
+	 * Time options for currentTime variable
+	 * Time can be view or modified
+	 * Each time the currentTime is modified, CheckForTimeOut() will be triggered.
+	 * @param currentTime Current Time of the System
+	 * @return the modified time
+	 */
 	public LocalTime TimeOptions(LocalTime currentTime)
 	{
 		Scanner sc = new Scanner(System.in);
@@ -663,7 +670,7 @@ public class SystemManager
 		System.out.println("(4) Advance time by Hours");
 		System.out.println("(5) Exit");
 		System.out.println("=========================");
-		
+
 		do
 		{
 			choice = sc.nextInt();
@@ -672,7 +679,7 @@ public class SystemManager
 			case 1:
 				System.out.println("Time: " + currentTime);
 				break;
-			
+
 			case 2:
 				sc.nextLine(); // Buffer
 				System.out.println("Input Time (XX:XX): ");
@@ -681,7 +688,7 @@ public class SystemManager
 				System.out.println("Time: " + currentTime);
 				CheckForTimeOut(currentTime);
 				break;
-				
+
 			case 3:
 				System.out.println("Advance time by (Minutes): ");
 				tempInt = sc.nextInt();
@@ -689,7 +696,7 @@ public class SystemManager
 				System.out.println("Time: " + currentTime);
 				CheckForTimeOut(currentTime);
 				break;
-				
+
 			case 4:
 				System.out.println("Advance time by (Hours): ");
 				tempInt = sc.nextInt();
@@ -697,24 +704,24 @@ public class SystemManager
 				System.out.println("Time: " + currentTime);
 				CheckForTimeOut(currentTime);
 				break;
-				
+
 			case 5:
 				System.out.println("Exiting Time Options");
 				break;
-				
+
 			}
 		} while(choice < 5);
-		
+
 		return currentTime;
 	}
-	
+
 	/**
-	* Displays all valid  system options
-	*/
+	 * Displays all valid  system options
+	 */
 	public void DisplaySystemOptions()
 	{
 		System.out.println("=========================");
-		
+
 		System.out.println("0:  Display System Options");
 
 		// MENU //////////////////////////////////
@@ -734,7 +741,7 @@ public class SystemManager
 		System.out.println("7:  Update Order");
 		System.out.println("8:  View Order");
 		System.out.println("9:  View All Orders");
-		
+
 		System.out.println("10: Print Order Invoice");
 		System.out.println("11: Make Payment");
 
@@ -749,9 +756,9 @@ public class SystemManager
 		System.out.println("15: View All Reservations");
 		System.out.println("16: Occupy Table (Walk-ins)");
 		System.out.println("17: Occupy Table (Reservations)");
-		
+
 		System.out.println("18: Time Options");
-		
+
 		System.out.println("19: View Total Revenue");
 
 		System.out.println("20: Quit");
@@ -759,10 +766,10 @@ public class SystemManager
 		System.out.println("=========================");
 		///////////////////////////////////////////////////////		
 	}
-	
+
 	/**
-	* Loads a collection of pre-determined Staff Objects to staffList
-	*/
+	 * Loads a collection of pre-determined Staff Objects to staffList
+	 */
 	public void LoadStaff()
 	{
 		Staff staff1 = new Staff("Joan", "Female", "Waiter", 0);
@@ -776,10 +783,10 @@ public class SystemManager
 		Staff staff5 = new Staff("Emma", "Female", "Manager", 4);
 		staffList.add(staff5);
 	}
-	
+
 	/**
-	* Loads a collection of pre-determined Table Objects to tableList
-	*/
+	 * Loads a collection of pre-determined Table Objects to tableList
+	 */
 	public void LoadTable()
 	{
 		Table table1 = new Table (2,false,false);
@@ -796,9 +803,9 @@ public class SystemManager
 		tableList.add(table6);
 		Table table7 = new Table (6,false,false);
 		tableList.add(table7);
-		Table table8 = new Table (6,false,false);
+		Table table8 = new Table (8,false,false);
 		tableList.add(table8);
-		Table table9 = new Table (8,false,false);
+		Table table9 = new Table (10,false,false);
 		tableList.add(table9);
 	}
 

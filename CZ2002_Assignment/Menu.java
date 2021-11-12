@@ -5,14 +5,14 @@ import java.util.Scanner;
 
 /**
  * Menu class for all menu related methods
-*/
+ */
 public class Menu {
 	private ArrayList<MenuItem> itemList = new ArrayList<MenuItem> ();
 	private ArrayList<Promotion> menuPromoList = new ArrayList<Promotion> ();
-	
+
 	/**
-	   * Loads the base menu and concatenates the list of base menu items to current item list.
-	*/
+	 * Loads the base menu and concatenates the list of base menu items to current item list.
+	 */
 	public void LoadBaseMenu() {
 		BaseMenu bm = new BaseMenu();
 		itemList.addAll(bm.CreateBaseItemList());
@@ -20,21 +20,21 @@ public class Menu {
 
 		PrintMenu();
 	}
-	
+
 	/**
-	   * Serves as an interface to create items for both menu and promotion lists
-	*/
+	 * Serves as an interface to create items for both menu and promotion lists
+	 */
 	public void Create() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("(1) Create New Item");
 		System.out.println("(2) Create New Promotion");
 		InputChecker ic = new InputChecker();
-		
+
 		int choice = 0;
 		boolean choiceBool = false;
 		for(int k = 0; k < ic.getNumOfTries(); k++) {
 			choice = ic.intChecker(choice, sc);
-			if(choice == -1 || !ic.inRange(choice, 0, 10000)) {
+			if(choice == -1 || !ic.inRange(choice, -1, 10000)) {
 				System.out.println("Invalid input for price, Number of tries: " + (k + 1));
 				sc.nextLine();
 				continue;
@@ -44,12 +44,12 @@ public class Menu {
 				break;
 			}
 		}
-		
+
 		if(!choiceBool) {
 			System.out.println("Exceeded number of tries, exiting");
 			return;
 		}
-		
+
 		if(choice == 1) {
 			CreateNewMenuItem();
 		}
@@ -57,16 +57,16 @@ public class Menu {
 			CreateNewPromotion();
 		}
 	}
-	
+
 	/**
-	   * Key in number of menu items you want to add to the menu and adds them, values keyed must be case specific
-	*/
+	 * Key in number of menu items you want to add to the menu and adds them, values keyed must be case specific
+	 */
 	public void CreateNewMenuItem() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("How many items you wish to add?");
 		int numItems = sc.nextInt();
 		InputChecker ic = new InputChecker();
-		
+
 		if(numItems <= 0) {
 			System.out.println("Invalid size declaration. Exiting.......");
 			return;
@@ -108,7 +108,7 @@ public class Menu {
 			boolean priceBool = false;
 			for(int k = 0; k < ic.getNumOfTries(); k++) {
 				price = ic.doubleChecker(price, sc);
-				
+
 				if(price == -1 || !ic.inRange(price, 0, 10000)) {
 					System.out.println("Invalid input for price, Number of tries: " + (k + 1));
 					sc.nextLine();
@@ -119,12 +119,12 @@ public class Menu {
 					break;
 				}
 			}
-			
+
 			if(!priceBool) {
 				System.out.println("Exceeded number of tries, exiting");
 				break;
 			}
-			
+
 			// Clears buffer 
 			sc.nextLine();
 
@@ -138,10 +138,10 @@ public class Menu {
 		}
 		//sc.close();
 	}
-	
+
 	/**
-	   * Interface to create new instance of a promotion object in the menu
-	*/
+	 * Interface to create new instance of a promotion object in the menu
+	 */
 	public void CreateNewPromotion() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("How many Promotional Sets you wish to add?");
@@ -154,55 +154,55 @@ public class Menu {
 
 		// Clears Buffer
 		sc.nextLine();
-		
+
 		// Ask for input for each item to be added.
 		for(int i =0; i < numOfSets; i++) {
 			System.out.printf("New Promotion Set %d\n",i + 1);
-		
-		System.out.println("Promotion Name:");
-		String promoName = sc.nextLine();
-		// If a duplicate name was keyed to be added, ask for another name again
-		if(checkPromoList(promoName)) {
-			
-			System.out.println("(1) Try Again");
-			System.out.println("(2) Exit");
-			
-			int choice = sc.nextInt();
-			sc.nextLine();
-			if(choice == 1) {
-				i-=1;
-				continue;
+
+			System.out.println("Promotion Name:");
+			String promoName = sc.nextLine();
+			// If a duplicate name was keyed to be added, ask for another name again
+			if(checkPromoList(promoName)) {
+
+				System.out.println("(1) Try Again");
+				System.out.println("(2) Exit");
+
+				int choice = sc.nextInt();
+				sc.nextLine();
+				if(choice == 1) {
+					i-=1;
+					continue;
+				}
+				else {
+					System.out.println("Exiting, sucessful previous Promotions Set added will reamain in the list");
+					return;
+				}
 			}
-			else {
-				System.out.println("Exiting, sucessful previous Promotions Set added will reamain in the list");
-				return;
-			}
-		}
-		System.out.println("Size of new Promotional set");
-		int size = sc.nextInt();
-		
-		Promotion curPromoSet = new Promotion();
-		
-		
-		addItemsToPromoSet(curPromoSet, size);
-		
-		//After finishing current promotional set add to promotion set menu
-		curPromoSet.setPromoName(promoName);
-		AddToMenuPromoList(curPromoSet, true);
-		sc = new Scanner(System.in);//reset buffer
-		
+			System.out.println("Size of new Promotional set");
+			int size = sc.nextInt();
+
+			Promotion curPromoSet = new Promotion();
+
+
+			addItemsToPromoSet(curPromoSet, size);
+
+			//After finishing current promotional set add to promotion set menu
+			curPromoSet.setPromoName(promoName);
+			AddToMenuPromoList(curPromoSet, true);
+			sc = new Scanner(System.in);//reset buffer
+
 		}
 	}
 
 	/**
-	   * Add items to a newly create promo set
-	   * @param curPromoset current promo set for item to be added to
-	   * @param size the number of items to be added to the set
-	*/
+	 * Add items to a newly create promo set
+	 * @param curPromoset current promo set for item to be added to
+	 * @param size the number of items to be added to the set
+	 */
 	private void addItemsToPromoSet(Promotion curPromoSet,int size) {
 		Scanner sc = new Scanner(System.in);
 		InputChecker ic = new InputChecker();
-				
+
 		for(int j = 0;j<size;j++) {
 			System.out.printf("Cur Promotion Set item no. %d\n",j + 1);
 			System.out.println("Add mene Item(s) to Promotion Set or unique Promotional Item");
@@ -226,7 +226,7 @@ public class Menu {
 
 				// If item enter already in menu
 				if(CheckList(itemName)) {
-					 
+
 					System.out.println("Item already in menu not unique please use option 1 for this item!!!");
 					j = j - 1; //no count so can retry
 					continue;
@@ -243,7 +243,7 @@ public class Menu {
 				boolean priceBool = false;
 				for(int k = 0; k < ic.getNumOfTries(); k++) {
 					price = ic.doubleChecker(price, sc);
-					
+
 					if(price == -1 || !ic.inRange(price, 0, 10000)) {
 						System.out.println("Invalid input for price, Number of tries: " + (k + 1));
 						sc.nextLine();
@@ -254,7 +254,7 @@ public class Menu {
 						break;
 					}
 				}
-				
+
 				if(!priceBool) {
 					System.out.println("Exceeded number of tries, exiting");
 					break;
@@ -276,14 +276,14 @@ public class Menu {
 		System.out.println("Set current promotion Set price: ");
 		double curPromoPrice = sc.nextDouble();
 		curPromoSet.setPromoPrice(curPromoPrice);
-		
+
 	}
-	
+
 	/**
-	   * Checks through mennu item list to see if there are any duplicates of name == parameter in both Lists
-	   * @param name reference name of item to search duplicate of
-	   * @return returns wether a duplicate is found or not
-	*/
+	 * Checks through mennu item list to see if there are any duplicates of name == parameter in both Lists
+	 * @param name reference name of item to search duplicate of
+	 * @return returns wether a duplicate is found or not
+	 */
 	private boolean CheckList(String name) {
 		for(int i = 0; i < itemList.size();i++) {
 			String itemName = itemList.get(i).getItemName();
@@ -295,12 +295,12 @@ public class Menu {
 		}
 		return false;
 	}
-	
+
 	/**
-	   * Check promoList if have any duplicate promotional names
-	   * @param name reference name of item to search duplicate of
-	   * @return returns wether a duplicate is found or not
-	*/
+	 * Check promoList if have any duplicate promotional names
+	 * @param name reference name of item to search duplicate of
+	 * @return returns wether a duplicate is found or not
+	 */
 	private boolean checkPromoList(String name) {
 		for(Promotion pSet : menuPromoList) {
 			if(pSet.getPromoName().equals(name)) {
@@ -308,16 +308,16 @@ public class Menu {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 
 	/**
-	   * Adds menu item to its list data structure
-	   * @param m menuitem to be added to the list of menu items
-	   * @param print if a notification should be printed after adding
-	*/
+	 * Adds menu item to its list data structure
+	 * @param m menuitem to be added to the list of menu items
+	 * @param print if a notification should be printed after adding
+	 */
 	public void AddToItemList(MenuItem m, boolean print) {
 		itemList.add(m);
 
@@ -331,12 +331,12 @@ public class Menu {
 			PrintMenu();
 		}
 	}
-	
+
 	/**
-	   * Adds promotion to its list data structure
-	   * @param p object to be added to the list
-	   * @param print if a notification should be printed after adding
-	*/
+	 * Adds promotion to its list data structure
+	 * @param p object to be added to the list
+	 * @param print if a notification should be printed after adding
+	 */
 	public void AddToMenuPromoList(Promotion p, boolean print) {
 		menuPromoList.add(p);
 		if(print) {
@@ -350,15 +350,15 @@ public class Menu {
 	}
 
 	/**
-	   * Serves as an interface to update for both promotion and menu item
-	*/
+	 * Serves as an interface to update for both promotion and menu item
+	 */
 	public void Update() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("(1) Update a Menu Item");
 		System.out.println("(2) Update a Promotion");
-		
+
 		int choice = sc.nextInt();
-		
+
 		if(choice == 1) {
 			//PrintMenu();
 			//display all menu excludind promotion
@@ -375,17 +375,17 @@ public class Menu {
 			UpdatePromotion(index -1);		
 		}
 	}
-	
+
 	/**
-	   * Updates selected menu item of index
-	   * @param index index of item to be updated
-	*/
+	 * Updates selected menu item of index
+	 * @param index index of item to be updated
+	 */
 	public void UpdateMenuItem(int index) {	
-		
+
 		Scanner sc = new Scanner(System.in);
 
 		MenuItem m = itemList.get(index);
-		
+
 		System.out.println("");
 		System.out.println("================ SELECTED ITEM ===================");
 		PrintFromMenuListItem(index);
@@ -397,30 +397,30 @@ public class Menu {
 		System.out.println("(4)Change Category");
 
 		int option = sc.nextInt();
-		
+
 		switch(option) {
-			case 1: 
-				sc.nextLine();
-				System.out.println("New Name");
-				String newName = sc.nextLine();
-				m.setItemName(newName, false);
+		case 1: 
+			sc.nextLine();
+			System.out.println("New Name");
+			String newName = sc.nextLine();
+			m.setItemName(newName, false);
 			break;
-			case 2: 
-				System.out.println("New Price");
-				double newPrice = sc.nextDouble();
-				m.setItemPrice(newPrice, false);
+		case 2: 
+			System.out.println("New Price");
+			double newPrice = sc.nextDouble();
+			m.setItemPrice(newPrice, false);
 			break;
-			case 3: 
-				sc.nextLine();
-				System.out.println("New Description");
-				String newDescript = sc.nextLine();
-				m.setItemDescription(newDescript, false);
+		case 3: 
+			sc.nextLine();
+			System.out.println("New Description");
+			String newDescript = sc.nextLine();
+			m.setItemDescription(newDescript, false);
 			break;
-			case 4: 
-				sc.nextLine();
-				System.out.println("New Category");
-				MenuCategory newCate = MenuCategory.valueOf(sc.nextLine().toUpperCase());
-				m.setMenuCategory(newCate, false);
+		case 4: 
+			sc.nextLine();
+			System.out.println("New Category");
+			MenuCategory newCate = MenuCategory.valueOf(sc.nextLine().toUpperCase());
+			m.setMenuCategory(newCate, false);
 			break;
 		}
 		System.out.println("");
@@ -429,48 +429,48 @@ public class Menu {
 		System.out.println("=========================================================");
 		System.out.println("");
 	}
-	
+
 	/**
-	   * Updates selected promotion of index
-	   * @param index index of promotion to be updated
-	*/
+	 * Updates selected promotion of index
+	 * @param index index of promotion to be updated
+	 */
 	public void UpdatePromotion(int index) {	
 		Scanner sc = new Scanner(System.in);
 		Promotion p = menuPromoList.get(index);
-		
+
 		System.out.println("(1) Change Name");
 		System.out.println("(2) Change Price");
 		System.out.println("(3) Add Item");
 		System.out.println("(4) Remove Item");
 		int option = sc.nextInt();
-		
+
 		switch(option) {
-			case 1: 
-				sc.nextLine();
-				System.out.println("New Name");
-				String newName = sc.nextLine();
-				p.setPromoName(newName);
+		case 1: 
+			sc.nextLine();
+			System.out.println("New Name");
+			String newName = sc.nextLine();
+			p.setPromoName(newName);
 			break;
-			case 2: 
-				System.out.println("New Price");
-				double newPrice = sc.nextDouble();
-				p.setPromoPrice(newPrice);
+		case 2: 
+			System.out.println("New Price");
+			double newPrice = sc.nextDouble();
+			p.setPromoPrice(newPrice);
 			break;
-			case 3: 
-				System.out.println("Number of items to add");
-				int num = sc.nextInt();
-				addItemsToPromoSet(p, num);
+		case 3: 
+			System.out.println("Number of items to add");
+			int num = sc.nextInt();
+			addItemsToPromoSet(p, num);
 			break;
-			case 4:
-				p.displayPromotionItems();
-				System.out.println("Select which item to be remove from current promotion set");
-				int itemIndex = sc.nextInt();
-				p.getPromoList().remove(itemIndex -1);
-				//Set the current promotional set price 
-				System.out.println("current promotion set price base on original item price: $" + p.getOriginalPrice());
-				System.out.println("Set current promotion Set price: ");
-				double curPromoPrice = sc.nextDouble();
-				p.setPromoPrice(curPromoPrice);
+		case 4:
+			p.displayPromotionItems();
+			System.out.println("Select which item to be remove from current promotion set");
+			int itemIndex = sc.nextInt();
+			p.getPromoList().remove(itemIndex -1);
+			//Set the current promotional set price 
+			System.out.println("current promotion set price base on original item price: $" + p.getOriginalPrice());
+			System.out.println("Set current promotion Set price: ");
+			double curPromoPrice = sc.nextDouble();
+			p.setPromoPrice(curPromoPrice);
 			break;
 		}
 		System.out.println("");
@@ -482,15 +482,15 @@ public class Menu {
 	}
 
 	/**
-	   * Interface for removing from any of the promotion and menu items list
-	*/
+	 * Interface for removing from any of the promotion and menu items list
+	 */
 	public void Remove() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("(1) Remove a Menu Item");
 		System.out.println("(2) Remove a Promotion");
-		
+
 		int choice = sc.nextInt();
-		
+
 		if(choice == 1) {
 			PrintMenu();
 			System.out.println("Item Number:");
@@ -505,11 +505,11 @@ public class Menu {
 			RemoveFromPromoList(index - 1);
 		}
 	}
-	
+
 	/**
-	   * Removes selected item of index from menu item list
-	   * @param index index of menu item to be removed
-	*/
+	 * Removes selected item of index from menu item list
+	 * @param index index of menu item to be removed
+	 */
 	public void RemoveFromItemList(int index) {
 		MenuItem m = itemList.get(index);
 		itemList.remove(index);
@@ -520,11 +520,11 @@ public class Menu {
 		System.out.println("=========================================================");
 		System.out.println("");
 	}
-	
+
 	/**
-	   * Remove entire promotion Set from list
-	   * @param index index of promotion to be removed
-	*/
+	 * Remove entire promotion Set from list
+	 * @param index index of promotion to be removed
+	 */
 	public void RemoveFromPromoList(int index) {
 		Promotion p = menuPromoList.get(index);
 		menuPromoList.remove(index);
@@ -534,15 +534,15 @@ public class Menu {
 		System.out.println("=========================================================");
 		System.out.println("");
 	}
-	
-	
+
+
 	/**
-	   * Prints entire current itemList and promotion set
-	*/
+	 * Prints entire current itemList and promotion set
+	 */
 	public void PrintMenu() {
 		System.out.println("");
 		System.out.println("==================== MENU ========================");
-		
+
 		System.out.println("");
 		System.out.println("==================== ITEMS ========================");
 		for(int i =0; i < itemList.size();i++) {
@@ -553,7 +553,7 @@ public class Menu {
 		System.out.println("==================== PROMOTIONS ========================");
 
 		printPromotionMenu();
-		
+
 		System.out.println("");
 		System.out.println("=========================================================");		
 		System.out.println("");
@@ -561,21 +561,21 @@ public class Menu {
 
 
 	/**
-	   * Prints only the selected index from item list
-	   * @param index index of item from list to be printed
-	*/
+	 * Prints only the selected index from item list
+	 * @param index index of item from list to be printed
+	 */
 	public void PrintFromMenuListItem(int index) {
 		System.out.println("Item: " + (index+1));
 		PrintItem(itemList.get(index));
 	}
-	
+
 	/**
-	   * Prints only the item portion of the menu
-	*/
+	 * Prints only the item portion of the menu
+	 */
 	public void printItemsMenu() {
 		System.out.println("");
 		System.out.println("==================== MENU ========================");
-		
+
 		System.out.println("");
 		System.out.println("==================== ITEMS ========================");
 		for(int i =0; i < itemList.size();i++) {
@@ -584,17 +584,17 @@ public class Menu {
 
 		System.out.println("");
 	}
-	
-	
+
+
 	/**
-	   * Prints only the promotion portion of the menu
-	*/	
+	 * Prints only the promotion portion of the menu
+	 */	
 	public void printPromotionMenu() {
 		System.out.println("");
 		System.out.println("==================== PROMOTION MENU ========================");
-		
+
 		System.out.println("");
-		
+
 		//System.out.println("");
 		System.out.println("==================== PROMOTIONS SETS ========================");
 
@@ -607,22 +607,22 @@ public class Menu {
 		System.out.println("=========================================================");		
 		System.out.println("");
 	}
-	
+
 	/**
-	   * Prints selected index from promotion list
-	   * @param index to be printed
-	*/
+	 * Prints selected index from promotion list
+	 * @param index to be printed
+	 */
 	public void PrintFromPromoListItem(int index) {
 		System.out.println("");
 		System.out.println("Promotion: " + (index+1));
-	    PrintPromotion(menuPromoList.get(index));
+		PrintPromotion(menuPromoList.get(index));
 		System.out.println("");
 	}
-	
+
 	/**
-	   * Prints Menu Item in stated format
-	   * @param m object to be printed
-	*/
+	 * Prints Menu Item in stated format
+	 * @param m object to be printed
+	 */
 	public void PrintItem(MenuItem m) {
 		System.out.println("");
 		System.out.println("Name: " + m.getItemName());
@@ -633,9 +633,9 @@ public class Menu {
 	}
 
 	/**
-	   * Prints the specific promotion 
-	   * @param p object to be printed
-	*/
+	 * Prints the specific promotion 
+	 * @param p object to be printed
+	 */
 	public void PrintPromotion(Promotion p) {
 		System.out.println("");
 		System.out.println("Promotion set: " +p.getPromoName());
@@ -644,10 +644,10 @@ public class Menu {
 		p.displayPromotionItems();
 		System.out.println("");
 	}
-	
+
 	/**
-	   * Prints current size of itemList & promoList
-	*/
+	 * Prints current size of itemList & promoList
+	 */
 	public void PrintSize() {
 		System.out.println("---------------------------------------------------");
 		System.out.println("ITEM SIZE = " + getMainMenuSize());
@@ -655,61 +655,61 @@ public class Menu {
 		System.out.println("---------------------------------------------------");
 	}
 
-	
+
 	/**
-	   * Gets the size of the menu list
-	   * @return size of menu list
-	*/
+	 * Gets the size of the menu list
+	 * @return size of menu list
+	 */
 	public int getMainMenuSize() {
 		return itemList.size();
 	}
-	
+
 	/**
-	   * Gets the size of the promotion list
-	   * @return size of promotion list
-	*/
+	 * Gets the size of the promotion list
+	 * @return size of promotion list
+	 */
 	public int getPromotionMenuSize() {
 		return menuPromoList.size();
 	}
 
-	
+
 	/**
-	   * Gets the list reference of the menu item list
-	   * @return menu item list
-	*/
+	 * Gets the list reference of the menu item list
+	 * @return menu item list
+	 */
 	public ArrayList<MenuItem> getItemList() {
 		return itemList;
 	}
-	
+
 
 	/**
-	   * Get specific menu item from list
-	   * @param index index reference
-	   * @return menu item to be returned
-	*/
+	 * Get specific menu item from list
+	 * @param index index reference
+	 * @return menu item to be returned
+	 */
 	public MenuItem getMenuItem(int index) {
 		//get item from array,array 0 base index
 		//item display from 1 onwards but start from 0 base index
 		return itemList.get(index);
 	}
-	
+
 	/**
-	   * Gets the list reference of the promotion list
-	   * @return promotion list
-	*/
+	 * Gets the list reference of the promotion list
+	 * @return promotion list
+	 */
 	public ArrayList<Promotion> getMenuPromoList() {
 		return menuPromoList;
 	}
-	
+
 	/**
-	   * Get specific promotion from list
-	   * @param index index reference
-	   * @return promotion to be returned
-	*/
+	 * Get specific promotion from list
+	 * @param index index reference
+	 * @return promotion to be returned
+	 */
 	public Promotion getPromotion(int index) {  
-		  //index 0 is first promotion 
-		  //but on display 1)promo 1 is index 0  
-		  //so typing 1 will give promotion 1 at index 0 
-		  return menuPromoList.get(index); 
+		//index 0 is first promotion 
+		//but on display 1)promo 1 is index 0  
+		//so typing 1 will give promotion 1 at index 0 
+		return menuPromoList.get(index); 
 	}
 }
