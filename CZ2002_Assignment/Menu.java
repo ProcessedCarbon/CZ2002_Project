@@ -15,11 +15,8 @@ public class Menu {
 	*/
 	public void LoadBaseMenu() {
 		BaseMenu bm = new BaseMenu();
-		//if(bm.baseMenuSize() > 0)
-			itemList.addAll(bm.CreateBaseItemList());
-		
-		//if(bm.basePromoSize() > 0)
-			menuPromoList.addAll(bm.CreateBasePromoList());
+		itemList.addAll(bm.CreateBaseItemList());
+		menuPromoList.addAll(bm.CreateBasePromoList());
 
 		PrintMenu();
 	}
@@ -31,8 +28,27 @@ public class Menu {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("(1) Create New Item");
 		System.out.println("(2) Create New Promotion");
+		InputChecker ic = new InputChecker();
 		
-		int choice = sc.nextInt();
+		int choice = 0;
+		boolean choiceBool = false;
+		for(int k = 0; k < ic.getNumOfTries(); k++) {
+			choice = ic.intChecker(choice, sc);
+			if(choice == -1 || !ic.inRange(choice, 0, 10000)) {
+				System.out.println("Invalid input for price, Number of tries: " + (k + 1));
+				sc.nextLine();
+				continue;
+			}
+			else {
+				choiceBool = true;
+				break;
+			}
+		}
+		
+		if(!choiceBool) {
+			System.out.println("Exceeded number of tries, exiting");
+			return;
+		}
 		
 		if(choice == 1) {
 			CreateNewMenuItem();
@@ -49,7 +65,8 @@ public class Menu {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("How many items you wish to add?");
 		int numItems = sc.nextInt();
-
+		InputChecker ic = new InputChecker();
+		
 		if(numItems <= 0) {
 			System.out.println("Invalid size declaration. Exiting.......");
 			return;
@@ -68,8 +85,6 @@ public class Menu {
 
 			// If a duplicate name was keyed to be added, ask for another name again
 			if(CheckList(itemName)) {
-				
-				
 				System.out.println("(1) Try Again");
 				System.out.println("(2) Exit");
 				int choice = sc.nextInt();
@@ -79,7 +94,7 @@ public class Menu {
 					continue;
 				}
 				else {
-					System.out.println("Exiting, sucessful previous items added will reamain in the list");
+					System.out.println("Exiting, sucessful previous items added will remain in the list");
 					break;
 				}
 			}
@@ -87,11 +102,29 @@ public class Menu {
 			// Read Description
 			System.out.println("Description:");
 			String desp = sc.nextLine();
-
 			// Read Price
 			System.out.println("Price:");
-			double price = sc.nextDouble();
-
+			double price = 0;
+			boolean priceBool = false;
+			for(int k = 0; k < ic.getNumOfTries(); k++) {
+				price = ic.doubleChecker(price, sc);
+				
+				if(price == -1 || !ic.inRange(price, 0, 10000)) {
+					System.out.println("Invalid input for price, Number of tries: " + (k + 1));
+					sc.nextLine();
+					continue;
+				}
+				else {
+					priceBool = true;
+					break;
+				}
+			}
+			
+			if(!priceBool) {
+				System.out.println("Exceeded number of tries, exiting");
+				break;
+			}
+			
 			// Clears buffer 
 			sc.nextLine();
 
@@ -103,14 +136,15 @@ public class Menu {
 			MenuItem m = new MenuItem(itemName,desp,price,category);
 			AddToItemList(m, true);
 		}
+		//sc.close();
 	}
-
+	
 	/**
 	   * Interface to create new instance of a promotion object in the menu
 	*/
 	public void CreateNewPromotion() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("How many promotionalSets you wish to add?");
+		System.out.println("How many Promotional Sets you wish to add?");
 		int numOfSets = sc.nextInt();
 
 		if(numOfSets <= 0) {
@@ -167,6 +201,8 @@ public class Menu {
 	*/
 	private void addItemsToPromoSet(Promotion curPromoSet,int size) {
 		Scanner sc = new Scanner(System.in);
+		InputChecker ic = new InputChecker();
+				
 		for(int j = 0;j<size;j++) {
 			System.out.printf("Cur Promotion Set item no. %d\n",j + 1);
 			System.out.println("Add mene Item(s) to Promotion Set or unique Promotional Item");
@@ -202,8 +238,27 @@ public class Menu {
 
 				// Read Price
 				System.out.println("Price:");
-				double price = sc.nextDouble();
-
+				//double price = sc.nextDouble();
+				double price = 0;
+				boolean priceBool = false;
+				for(int k = 0; k < ic.getNumOfTries(); k++) {
+					price = ic.doubleChecker(price, sc);
+					
+					if(price == -1 || !ic.inRange(price, 0, 10000)) {
+						System.out.println("Invalid input for price, Number of tries: " + (k + 1));
+						sc.nextLine();
+						continue;
+					}
+					else {
+						priceBool = true;
+						break;
+					}
+				}
+				
+				if(!priceBool) {
+					System.out.println("Exceeded number of tries, exiting");
+					break;
+				}
 				// Clears buffer 
 				sc.nextLine();
 
@@ -217,7 +272,7 @@ public class Menu {
 			}
 		}
 		//Set the current promotional set price 
-		System.out.println("current promotion set price base on original item price: $" + curPromoSet.getOriginalPrice());
+		System.out.println("current promotion set price base on original item price: $%.2f" + curPromoSet.getOriginalPrice());
 		System.out.println("Set current promotion Set price: ");
 		double curPromoPrice = sc.nextDouble();
 		curPromoSet.setPromoPrice(curPromoPrice);
@@ -576,8 +631,6 @@ public class Menu {
 		System.out.println("Category: " + m.getMenuCategory());
 		System.out.println("");
 	}
-	
-
 
 	/**
 	   * Prints the specific promotion 
@@ -591,12 +644,9 @@ public class Menu {
 		p.displayPromotionItems();
 		System.out.println("");
 	}
-
-	
-
 	
 	/**
-	   * Prints current size of itemList and promoList
+	   * Prints current size of itemList & promoList
 	*/
 	public void PrintSize() {
 		System.out.println("---------------------------------------------------");
@@ -661,5 +711,5 @@ public class Menu {
 		  //but on display 1)promo 1 is index 0  
 		  //so typing 1 will give promotion 1 at index 0 
 		  return menuPromoList.get(index); 
-		 }
+	}
 }
