@@ -88,6 +88,7 @@ public class SystemManager
 			case 5: // CREATE CUSTOMER //
 				Customer cst = new Customer("","",1,true,-1);
 				cst.CreateCustomer();
+				System.out.println(cst.getName() + " created.");
 				sys.AppendCustomerToList(cst); 
 				break;
 				
@@ -199,25 +200,7 @@ public class SystemManager
 
 			case 14: // REMOVE RESERVATION //
 				sys.RemoveReservation();
-				
-				/*
-				sc.nextLine();
-				System.out.println("=========================");
-				System.out.println("Removing Reservation...");
-				System.out.println("Enter Customer Name: ");
-				tempStr = sc.nextLine();
-				for (int i=0; i < reservationList.size(); i++)
-				{
-					if(tempStr.equals(reservationList.get(i).getReservationCustomer().getName()))
-					{
-						tableList.get(reservationList.get(i).getReservationTable()).setReserved(false);;
-						reservationList.remove(i);
-						System.out.println("Reservation for " + tempStr + " Removed");
-						break;
-					}
-					System.out.println(tempStr + " not found in customerList.");
-				}
-				*/
+
 				break;
 				
 			case 15:
@@ -236,6 +219,7 @@ public class SystemManager
 				sc.nextLine();
 				Boolean cstFound = false;
 				System.out.println("=========================");
+				sys.ViewAllCustomer();
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
 				for(int i = 0; i < customerList.size(); i++)
@@ -256,6 +240,7 @@ public class SystemManager
 			case 17: // OCCUPY TABLE - FOR RESERVED CUSTOMERS //
 				sc.nextLine();
 				System.out.println("=========================");
+				sys.ViewAllCustomer();
 				System.out.println("Enter Customer Name: ");
 				tempStr = sc.nextLine();
 				for (int i=0; i < reservationList.size(); i++)
@@ -514,7 +499,7 @@ public class SystemManager
 		{
 			if(reservationList.get(i).getReservationTable() == tableIndex)
 			{
-				System.out.println("Table: " + reservationList.get(i).getReservationTable());
+				System.out.println("Table: " + (reservationList.get(i).getReservationTable() + 1));
 				System.out.println("Reservation Time: " + reservationList.get(i).getReservationTime());
 				System.out.println("Customer: " + reservationList.get(i).getReservationCustomer().getName());
 				System.out.println("Num of Pax: " + reservationList.get(i).getReservationPax());
@@ -607,30 +592,33 @@ public class SystemManager
 	*/
 	public void CheckForTimeOut(LocalTime currentTime)
 	{		
-		System.out.println("Checking for time out...");
-		
 		int maxTimeDuration = 30;
 		String tempStr;
-		
+
 		for(int i = 0; i < reservationList.size(); i++)
-		{
+		{ 
+			//System.out.println("i is " + i);
 			//System.out.println("Reservation Time: " + reservationList.get(i).getReservationTime());
 			LocalTime maxTime = reservationList.get(i).getReservationTime().plus(Duration.ofMinutes(maxTimeDuration));
-			// System.out.println("Max Time: " + maxTime);
+			//System.out.println("Max Time: " + maxTime);
 			if(currentTime.isAfter(maxTime))
 			{
 				tempStr = reservationList.get(i).getReservationCustomer().getName();
-				
-				for (int j=0; j < reservationList.size(); i++)
-				{
-					if(tempStr.equals(reservationList.get(i).getReservationCustomer().getName()))
+
+				for (int j=0; j < reservationList.size(); j++)
+				{ 
+
+					if(tempStr.equals(reservationList.get(j).getReservationCustomer().getName()))
 					{
-						tableList.get(reservationList.get(i).getReservationTable()).setReserved(false);;
-						reservationList.remove(i);
+						//System.out.println("j is " + j);
+						tableList.get(reservationList.get(j).getReservationTable()).setReserved(false);;
+						reservationList.remove(j);
 						System.out.println("Reservation for " + tempStr + " Removed.");
+						i--;
 						break;
 					}
 				}
+
 			}
 		}
 		
