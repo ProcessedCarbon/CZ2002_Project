@@ -241,7 +241,7 @@ public class SystemManager
 						cstFound = true;
 						break;
 					}
-					if(!cstFound)System.out.println("All tables occupied.");
+					if(!cstFound & i == customerList.size() - 1)System.out.println("All tables occupied.");
 				}
 				break;
 
@@ -508,6 +508,7 @@ public class SystemManager
 			if(reservationList.get(i).getReservationTable() == tableIndex)
 			{
 				System.out.println("Table: " + (reservationList.get(i).getReservationTable() + 1));
+				System.out.println("Reservation Date: " + reservationList.get(i).getReservationDate());
 				System.out.println("Reservation Time: " + reservationList.get(i).getReservationTime());
 				System.out.println("Customer: " + reservationList.get(i).getReservationCustomer().getName());
 				System.out.println("Num of Pax: " + reservationList.get(i).getReservationPax());
