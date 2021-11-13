@@ -4,7 +4,7 @@ import java.util.*;
 /**
  *Represent a Promotion Set made up of MenuItem Stored in an ArrayList.
  *
- * @author Bryan Chatsirichai
+ * 
  * @version 1.0
  * @since 2021-11-08
  *
