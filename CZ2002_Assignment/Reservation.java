@@ -4,16 +4,36 @@ import java.util.Scanner;
 import java.time.*;
 
 /**
-* Reservation Class
-*/
+ * Reservation class for reservations made in the restaurant
+ * Contains attributes and methods relevant to a reservation made
+ */
 public class Reservation {
 
+	/**
+	* The date of reservation
+	*/
 	private String date;
-	LocalTime time; // Changed String time to LocalTime together with its functions
+	
+	LocalTime time;
+	
+	/**
+	* Number of customers who reserved seats
+	*/
 	private int pax;
+	
+	/**
+	* The customer who made the reservation
+	*/
 	private Customer customer;
+	
+	/**
+	* The table number allocated to the reservation
+	*/
 	private int tableNo;
 	
+	/**
+	* Class constructor for Reservation 
+	*/
 	public Reservation(String date, LocalTime time, int pax, Customer customer, int tableNo)
 	{
 		this.date = date;
@@ -67,6 +87,11 @@ public class Reservation {
 	{
 		this.tableNo = tableNo;
 	}
+	
+	/**
+	* Method which allows the user to create a reservation
+	* User inputs number of pax and date of reservation
+	*/
 	public void createReservation()
 	{
 		Scanner sc = new Scanner(System.in);
