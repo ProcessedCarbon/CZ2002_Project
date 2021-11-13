@@ -81,10 +81,10 @@ public class InputChecker {
 	 * Checks against an MenuCategory and returns an category if it can be assigned to c
 	 * @param c value to be tested against
 	 * @param sc scanner reference to read input
-	 * @return int value to assigned to the variable, return null if unsuccessful
+	 * @return category value to assigned to the variable, return null if unsuccessful
 	 */
 	public MenuCategory categoryChecker(MenuCategory c, Scanner sc) {
-		for(int i = 0; i < getNumOfTries(); i++) {
+		for(int i = 0; i < numOfTries; i++) {
 			try {
 				c = MenuCategory.valueOf(sc.nextLine().toUpperCase());
 				return c;
@@ -97,12 +97,5 @@ public class InputChecker {
 		}
 		return null;
 	}
-	
-	/**
-	 * Returns number of tries for all checks
-	 * @return int number of tries
-	 */
-	public int getNumOfTries() {
-		return numOfTries;
-	}
+
 }
