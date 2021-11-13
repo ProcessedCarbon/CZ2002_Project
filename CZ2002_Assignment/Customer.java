@@ -57,33 +57,77 @@ public class Customer {
 		sc.nextLine();
 	}
 	
+	/**
+	* Returns the name of the Customer
+	*/
 	public String getName() {
 		return Name;
 	}
+	
+	/**
+	* Sets the name of the customer to the input
+	* @para name name of Customer 
+	*/
 	public void setName(String name) {
 		Name = name;
 	}
+	
+	/**
+	* Returns the gender of the Customer
+	*/
 	public String getGender() {
 		return Gender;
 	}
+	
+	/**
+	* Sets the gender of the customer to the input
+	* @para gender gender of Customer 
+	*/
 	public void setGender(String gender) {  
 		Gender = gender;
 	}
+	
+	/**
+	* Returns the contact number of the Customer
+	*/
 	public int getContact() {
 		return Contact;
 	}
+	
+	/**
+	* Sets the contact number of the customer to the input
+	* @para contact contact number of Customer 
+	*/
 	public void setContact(int contact) {
 		Contact = contact;
 	}
+	
+	/**
+	* Returns the membership status of the Customer
+	*/
 	public boolean isMembership() {
 		return Membership;
 	}
+	
+	/**
+	* Sets the membership status of the customer to the input
+	* @para membership membership status of Customer 
+	*/
 	public void setMembership(boolean membership) {
 		Membership = membership;
 	}
+	
+	/**
+	* Sets the table number the customer is assigned
+	* @para tableIndex table number Customer is assigned to
+	*/
 	public void setTableNo(int tableIndex) {
 		tableNo = tableIndex;
 	}
+	
+	/**
+	* Returns the table number the Customer is assigned to
+	*/
 	public int getTableNo() {
 		return tableNo;
 	}
